@@ -71,7 +71,7 @@ data = st.session_state.data
 file_sha = st.session_state.file_sha
 all_people = list(data["people"].keys())
 
-st.title("🧹 Chore & Payment Tracker")
+st.title("🧹 Daemonangel Chore Tracker")
 
 # --- ACTION HANDLERS ---
 def handle_submission(who, chore_name, value):
