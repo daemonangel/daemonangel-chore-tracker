@@ -6,7 +6,19 @@ import streamlit as st
 # --- CONFIG ---
 st.set_page_config(page_title="Chore Tracker", page_icon="🧹", layout="centered")
 
-# --- GITHUB API HELPER FUNCTIONS ---
+# --- PRESET CHORES & PAYOUTS ---
+# Edit this dictionary to change your family's standard jobs and rates
+PRESET_CHORES = {
+    "🧹 Vacuuming": 3.00,
+    "🍽️ Dishwasher (Load/Empty)": 2.00,
+    "🗑️ Take Out Trash/Recycling": 1.50,
+    "🌱 Mowed Lawn": 15.00,
+    "🐶 Fed Pets": 1.00,
+    "🚗 Washed Car": 10.00,
+    "➕ Custom Chore...": 0.00
+}
+
+# --- GITHUB API CONFIG ---
 TOKEN = st.secrets["GITHUB_TOKEN"]
 REPO = st.secrets["REPO_NAME"]
 PATH = st.secrets["FILE_PATH"]
@@ -15,15 +27,12 @@ HEADERS = {"Authorization": f"token {TOKEN}", "Accept": "application/vnd.github.
 
 
 def load_data_from_github():
-    """Fetches the JSON file from GitHub and extracts its content and sha."""
     response = requests.get(URL, headers=HEADERS)
     if response.status_code == 200:
         file_data = response.json()
-        # GitHub returns contents in base64 encoding
         content = base64.b64decode(file_data["content"]).decode("utf-8")
         return json.loads(content), file_data["sha"]
     elif response.status_code == 404:
-        # File doesn't exist yet, return fresh structure
         return {"people": {}}, None
     else:
         st.error(f"Failed to fetch data from GitHub: {response.text}")
@@ -31,26 +40,20 @@ def load_data_from_github():
 
 
 def save_data_to_github(data, sha=None):
-    """Commits the updated JSON file structure back to the GitHub repo."""
     content_str = json.dumps(data, indent=4)
     content_bytes = base64.b64encode(content_str.encode("utf-8")).decode("utf-8")
-
     payload = {"message": "Update chore data via Streamlit", "content": content_bytes}
     if sha:
         payload["sha"] = sha
 
     response = requests.put(URL, headers=HEADERS, json=payload)
-    if response.status_code in [200, 201]:
-        return True
-    else:
-        st.error(f"Failed to save data to GitHub: {response.text}")
-        return False
+    return response.status_code in [200, 201]
 
 
 # --- INITIALIZE DATA ---
 data, file_sha = load_data_from_github()
 
-st.title("🧹 Daemonangel Chore Tracker")
+st.title("🧹 Chore & Payment Tracker")
 st.write("Track chores and balances securely using your GitHub Repository.")
 
 # --- APP UI ---
@@ -71,25 +74,51 @@ if st.sidebar.button("Add Person"):
 # Main Page: Log a Chore
 st.header("💰 Log a Chore")
 if all_people:
-    col1, col2, col3 = st.columns([1, 1.5, 1])
+    # 1. Who did it?
+    who = st.selectbox("Who did it?", all_people)
+    
+    # 2. Select from Presets (using clickable pills)
+    selected_preset = st.pills(
+        "Select a preset job:", 
+        options=list(PRESET_CHORES.keys()), 
+        default="🧹 Vacuuming"
+    )
+    
+    # 3. Dynamic Inputs based on the selected pill
+    col1, col2 = st.columns([2, 1])
+    
     with col1:
-        who = st.selectbox("Who did it?", all_people)
+        if selected_preset == "➕ Custom Chore...":
+            chore_name = st.text_input("Chore Description:", placeholder="e.g., Cleaned windows")
+            default_val = 0.00
+        else:
+            # Strip the emoji out for the history save file if preferred, or keep it clean
+            chore_name = selected_preset
+            default_val = PRESET_CHORES[selected_preset]
+            st.text_input("Chore Description:", value=chore_name, disabled=True)
+            
     with col2:
-        chore = st.text_input("What was the chore?", placeholder="e.g., Mowed Lawn")
-    with col3:
-        value = st.number_input("Payout ($)", min_value=0.0, step=0.50, format="%.2f")
+        # If it's a preset, it pre-populates the exact cash amount automatically
+        value = st.number_input(
+            "Payout ($)", 
+            min_value=0.0, 
+            value=default_val, 
+            step=0.50, 
+            format="%.2f",
+            disabled=(selected_preset != "➕ Custom Chore...") # locks amount for presets
+        )
 
     if st.button("Log Chore", type="primary"):
-        if chore and value > 0:
+        if chore_name and chore_name != "➕ Custom Chore..." and value > 0:
             data["people"][who]["balance"] += value
             data["people"][who]["history"].append(
-                {"chore": chore, "value": value, "paid": False}
+                {"chore": chore_name, "value": value, "paid": False}
             )
             if save_data_to_github(data, file_sha):
                 st.success(f"Logged! Added ${value:.2f} to {who}'s balance.")
                 st.rerun()
         else:
-            st.error("Please enter a chore description and a value greater than $0.")
+            st.error("Please ensure the chore has a valid description and a value greater than $0.")
 else:
     st.info("👈 Start by adding a family member in the sidebar!")
 
@@ -117,7 +146,6 @@ if all_people:
             else:
                 st.write("✅ All settled")
 
-        # Optional Expandable History
         if info["history"]:
             with st.expander(f"View {person}'s History"):
                 for item in reversed(info["history"]):
