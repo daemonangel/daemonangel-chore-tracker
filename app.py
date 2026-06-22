@@ -135,6 +135,7 @@ if all_people:
             chore_name = selected_preset
             default_val = PRESET_CHORES[selected_preset]
             st.text_input("Chore Description:", value=chore_name, disabled=True, key="disabled_chore_input")
+            is_disabled = True 
             
     with col2:
         value = st.number_input(
