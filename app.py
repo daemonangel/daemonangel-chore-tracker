@@ -6,8 +6,6 @@ import streamlit as st
 # --- CONFIG ---
 st.set_page_config(page_title="Chore Tracker", page_icon="🧹", layout="centered")
 
-# --- PRESET CHORES & PAYOUTS ---
-# Edit this dictionary to change your family's standard jobs and rates
 PRESET_CHORES = {
     "🧹 Vacuuming": 3.00,
     "🍽️ Dishwasher (Load/Empty)": 2.00,
@@ -52,43 +50,23 @@ def save_data_to_github(data, sha=None):
 
 # --- INITIALIZE DATA ---
 data, file_sha = load_data_from_github()
-
-st.title("🧹 Chore & Payment Tracker")
-st.write("Track chores and balances securely using your GitHub Repository.")
-
-# --- APP UI ---
 all_people = list(data["people"].keys())
 
-# Sidebar: Add Family Members
-st.sidebar.header("👤 Manage Family")
-new_person = st.sidebar.text_input("Add New Person:").strip()
-if st.sidebar.button("Add Person"):
-    if new_person and new_person not in all_people:
-        data["people"][new_person] = {"balance": 0.0, "history": []}
-        if save_data_to_github(data, file_sha):
-            st.sidebar.success(f"Added {new_person}!")
-            st.rerun()
-    elif new_person in all_people:
-        st.sidebar.warning("Name already exists.")
+st.title("🧹 Chore & Payment Tracker")
 
-# Main Page: Log a Chore
+# --- SECTION 1: LOG A CHORE ---
 st.header("💰 Log a Chore")
 if all_people:
-    # 1. Who did it?
     who = st.selectbox("Who did it?", all_people)
     
-    # 2. Select from Presets (using clickable pills)
     selected_preset = st.pills(
         "Select a preset job:", 
         options=list(PRESET_CHORES.keys()), 
         default="🧹 Vacuuming"
     )
     
-    # 3. Dynamic Inputs based on the selected pill (with a safety fallback if unselected)
     col1, col2 = st.columns([2, 1])
-    
     with col1:
-        # If "Custom" is picked OR nothing is selected at all (selected_preset is None)
         if selected_preset == "➕ Custom Chore..." or selected_preset is None:
             chore_name = st.text_input("Chore Description:", placeholder="e.g., Cleaned windows")
             default_val = 0.00
@@ -101,31 +79,66 @@ if all_people:
             
     with col2:
         value = st.number_input(
-            "Payout ($)", 
-            min_value=0.0, 
-            value=default_val, 
-            step=0.50, 
-            format="%.2f",
-            disabled=is_disabled
+            "Payout ($)", min_value=0.0, value=default_val, step=0.50, format="%.2f", disabled=is_disabled
         )
 
-    if st.button("Log Chore", type="primary"):
+    if st.button("Submit for Approval", type="primary"):
         if chore_name and chore_name != "➕ Custom Chore..." and value > 0:
-            data["people"][who]["balance"] += value
+            # We add it to history with status "Pending" and do NOT add it to the balance yet
+            import time
+            chore_id = str(int(time.time())) # unique timestamp ID to easily track/delete it
             data["people"][who]["history"].append(
-                {"chore": chore_name, "value": value, "paid": False}
+                {"id": chore_id, "chore": chore_name, "value": value, "status": "Pending"}
             )
             if save_data_to_github(data, file_sha):
-                st.success(f"Logged! Added ${value:.2f} to {who}'s balance.")
+                st.success(f"Submitted '{chore_name}' for {who}! Waiting for approval.")
                 st.rerun()
         else:
-            st.error("Please ensure the chore has a valid description and a value greater than $0.")
+            st.error("Please ensure the chore has a description and a value greater than $0.")
 else:
     st.info("👈 Start by adding a family member in the sidebar!")
 
 st.markdown("---")
 
-# Main Page: Balances & Payouts
+
+# --- SECTION 2: APPROVAL QUEUE (ADMIN) ---
+st.header("🛡️ Admin Approvals")
+pending_chores = []
+
+# Gather all pending items across all family profiles
+for person, info in data["people"].items():
+    for chore in info.get("history", []):
+        if chore.get("status") == "Pending":
+            pending_chores.append((person, chore))
+
+if pending_chores:
+    for person, chore in pending_chores:
+        c_col1, c_col2, c_col3 = st.columns([2, 1, 1.5])
+        with c_col1:
+            st.write(f"**{person}**: {chore['chore']}")
+        with c_col2:
+            st.write(f"${chore['value']:.2f}")
+        with c_col3:
+            # Inline action buttons with unique keys
+            btn_app, btn_deny = st.columns(2)
+            with btn_app:
+                if st.button("👍", key=f"app_{chore['id']}", help="Approve"):
+                    chore["status"] = "Approved"
+                    data["people"][person]["balance"] += chore["value"]
+                    if save_data_to_github(data, file_sha):
+                        st.rerun()
+            with btn_deny:
+                if st.button("👎", key=f"deny_{chore['id']}", help="Deny"):
+                    chore["status"] = "Denied"
+                    if save_data_to_github(data, file_sha):
+                        st.rerun()
+else:
+    st.write("✅ No chores waiting for approval right now.")
+
+st.markdown("---")
+
+
+# --- SECTION 3: BALANCES & HISTORY REMOVAL ---
 st.header("📊 Current Balances")
 if all_people:
     for person, info in data["people"].items():
@@ -139,18 +152,55 @@ if all_people:
             if info["balance"] > 0:
                 if st.button(f"Pay {person}", key=f"pay_{person}"):
                     data["people"][person]["balance"] = 0.0
-                    for c in data["people"][person]["history"]:
-                        c["paid"] = True
+                    for c in info["history"]:
+                        if c.get("status") == "Approved":
+                            c["status"] = "Paid"
                     if save_data_to_github(data, file_sha):
                         st.toast(f"Paid {person}!")
                         st.rerun()
             else:
-                st.write("✅ All settled")
+                st.write(" Settled")
 
+        # History view with an absolute Delete button
         if info["history"]:
-            with st.expander(f"View {person}'s History"):
-                for item in reversed(info["history"]):
-                    status = "✅ Paid" if item["paid"] else "⏳ Unpaid"
-                    st.write(f"- {item['chore']}: **${item['value']:.2f}** ({status})")
+            with st.expander(f"View {person}'s History & Manage"):
+                for item in reversed(info.get("history", [])):
+                    status = item.get("status", "Approved")
+                    
+                    # Style based on status
+                    if status == "Pending":
+                        status_str = "⏳ Pending"
+                    elif status == "Approved":
+                        status_str = "🟢 Approved (Unpaid)"
+                    elif status == "Denied":
+                        status_str = "❌ Denied"
+                    else:
+                        status_str = "✅ Paid"
+                        
+                    h_col1, h_col2 = st.columns([4, 1])
+                    with h_col1:
+                        st.write(f"- {item['chore']}: **${item['value']:.2f}** ({status_str})")
+                    with h_col2:
+                        # Give a trash can button to entirely clear a chore entry
+                        # Ensure we assign fallback structural IDs if running on older json entries
+                        item_id = item.get("id", item['chore'])
+                        if st.button("🗑️", key=f"del_{item_id}_{person}", help="Permanently Delete Entry"):
+                            # If we delete an approved chore, subtract its value from their balance
+                            if status == "Approved":
+                                data["people"][person]["balance"] -= item["value"]
+                            
+                            info["history"].remove(item)
+                            if save_data_to_github(data, file_sha):
+                                st.rerun()
 else:
     st.write("No family profiles logged yet.")
+
+# Sidebar Settings
+st.sidebar.header("👤 Manage Family")
+new_person = st.sidebar.text_input("Add New Person:").strip()
+if st.sidebar.button("Add Person"):
+    if new_person and new_person not in all_people:
+        data["people"][new_person] = {"balance": 0.0, "history": []}
+        if save_data_to_github(data, file_sha):
+            st.sidebar.success(f"Added {new_person}!")
+            st.rerun()
