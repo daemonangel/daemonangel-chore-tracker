@@ -178,12 +178,14 @@ if all_people:
         else:
             chore_name = selected_preset
             default_val = PRESET_CHORES[selected_preset]
-            st.text_input("Chore Description:", value=chore_name, disabled=True, key="disabled_chore_input")
+            # 💡 FIX: We use a dynamic key based on the selected preset name so Streamlit updates instantly
+            st.text_input("Chore Description:", value=chore_name, disabled=True, key=f"disabled_{selected_preset}")
             is_disabled = True
             
     with col2:
+        # 💡 FIX: We also make this key dynamic so the dollar value snaps to the new price instantly
         value = st.number_input(
-            "Payout ($)", min_value=0.0, value=default_val, step=0.50, format="%.2f", disabled=is_disabled, key="payout_input"
+            "Payout ($)", min_value=0.0, value=default_val, step=0.50, format="%.2f", disabled=is_disabled, key=f"payout_{selected_preset}"
         )
 
     st.button(
