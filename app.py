@@ -1,6 +1,6 @@
 import json
 import os
-import streamlit as str
+import streamlit as st
 
 # --- CONFIG & DATA STORAGE ---
 st.set_page_config(page_title="Chore Tracker", page_icon="🧹", layout="centered")
