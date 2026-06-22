@@ -1,13 +1,13 @@
 {
     "people": {
         "Lexi": {
-            "balance": 0.0,
+            "balance": 2.0,
             "history": [
                 {
                     "id": "1782154771",
                     "chore": "\ud83c\udf7d\ufe0f Dishwasher (Load/Empty)",
                     "value": 2.0,
-                    "status": "Pending"
+                    "status": "Approved"
                 }
             ]
         }
