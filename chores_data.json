@@ -8,6 +8,12 @@
                     "chore": "\ud83c\udf7d\ufe0f Dishwasher (Load/Empty)",
                     "value": 2.0,
                     "status": "Pending"
+                },
+                {
+                    "id": "1782154941",
+                    "chore": "\ud83c\udf7d\ufe0f Dishwasher (Load/Empty)",
+                    "value": 2.0,
+                    "status": "Pending"
                 }
             ]
         }
