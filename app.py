@@ -8,12 +8,20 @@ import streamlit as st
 st.set_page_config(page_title="Chore Tracker", page_icon="🧹", layout="centered")
 
 PRESET_CHORES = {
+    "🛋️ Common Space Reset (Clutter put away)": 1.00,
+    "🛌 Personal Room Tidy (Bed made, floor clear)": 1.00,
+    "🍽️ Dishwasher (Load or Empty)": 2.00,
+    "🗑️ Take Out Trash/Recycling": 2.00,
+    "🎛️ Microwave Magic (Inside & Out)": 2.00,
+    "🧼 High-Touch Sanitize (Knobs, remotes, switches)": 2.00,
+    "🪶 Dusting & Wiping Shared Living Spaces": 3.00,
     "🧹 Vacuuming": 3.00,
-    "🍽️ Dishwasher (Load/Empty)": 2.00,
-    "🗑️ Take Out Trash/Recycling": 1.50,
-    "🌱 Mowed Lawn": 15.00,
-    "🐶 Fed Pets": 1.00,
-    "🚗 Washed Car": 10.00,
+    "🧺 Laundry Service (Wash, Dry, Fold & Put Away)": 4.00,
+    "🧊 Fridge Cleanout & Organize": 4.00,
+    "🧹 Vacuum & Mop Downstairs or Upstairs": 6.00,
+    "🍳 Cook a Family Meal & Clean Kitchen": 6.00,
+    "🧼 Deep Clean Bathroom (Toilet/Sink/Shower)": 8.00,
+    "🚗 Wash Car": 10.00,
     "➕ Custom Chore...": 0.00
 }
 
