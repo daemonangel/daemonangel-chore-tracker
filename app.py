@@ -1,5 +1,6 @@
 import base64
 import json
+import time
 import requests
 import streamlit as st
 
@@ -48,11 +49,44 @@ def save_data_to_github(data, sha=None):
     return response.status_code in [200, 201]
 
 
-# --- INITIALIZE DATA ---
-data, file_sha = load_data_from_github()
+# --- INITIALIZE DATA & SESSION STATE ---
+if "data" not in st.session_state or "file_sha" not in st.session_state:
+    data, file_sha = load_data_from_github()
+    st.session_state.data = data
+    st.session_state.file_sha = file_sha
+
+# Local pointer aliases for easier code readability
+data = st.session_state.data
+file_sha = st.session_state.file_sha
 all_people = list(data["people"].keys())
 
 st.title("🧹 Chore & Payment Tracker")
+
+# --- ACTION HANDLERS (Forces instantaneous state adjustments) ---
+def handle_approval(person, chore_id, approved=True):
+    for chore in st.session_state.data["people"][person]["history"]:
+        if chore.get("id") == chore_id:
+            if approved:
+                chore["status"] = "Approved"
+                st.session_state.data["people"][person]["balance"] += chore["value"]
+            else:
+                chore["status"] = "Denied"
+            break
+    save_data_to_github(st.session_state.data, st.session_state.file_sha)
+    st.rerun()
+
+
+def handle_deletion(person, item_id):
+    history_list = st.session_state.data["people"][person]["history"]
+    for item in history_list:
+        if item.get("id", item["chore"]) == item_id:
+            if item.get("status") == "Approved":
+                st.session_state.data["people"][person]["balance"] -= item["value"]
+            history_list.remove(item)
+            break
+    save_data_to_github(st.session_state.data, st.session_state.file_sha)
+    st.rerun()
+
 
 # --- SECTION 1: LOG A CHORE ---
 st.header("💰 Log a Chore")
@@ -84,14 +118,14 @@ if all_people:
 
     if st.button("Submit for Approval", type="primary"):
         if chore_name and chore_name != "➕ Custom Chore..." and value > 0:
-            # We add it to history with status "Pending" and do NOT add it to the balance yet
-            import time
-            chore_id = str(int(time.time())) # unique timestamp ID to easily track/delete it
-            data["people"][who]["history"].append(
+            chore_id = str(int(time.time()))
+            st.session_state.data["people"][who]["history"].append(
                 {"id": chore_id, "chore": chore_name, "value": value, "status": "Pending"}
             )
-            if save_data_to_github(data, file_sha):
+            if save_data_to_github(st.session_state.data, st.session_state.file_sha):
                 st.success(f"Submitted '{chore_name}' for {who}! Waiting for approval.")
+                # Clear session storage cache to fetch fresh SHA tag next build
+                del st.session_state.data
                 st.rerun()
         else:
             st.error("Please ensure the chore has a description and a value greater than $0.")
@@ -105,7 +139,6 @@ st.markdown("---")
 st.header("🛡️ Admin Approvals")
 pending_chores = []
 
-# Gather all pending items across all family profiles
 for person, info in data["people"].items():
     for chore in info.get("history", []):
         if chore.get("status") == "Pending":
@@ -119,19 +152,12 @@ if pending_chores:
         with c_col2:
             st.write(f"${chore['value']:.2f}")
         with c_col3:
-            # Inline action buttons with unique keys
             btn_app, btn_deny = st.columns(2)
             with btn_app:
-                if st.button("👍", key=f"app_{chore['id']}", help="Approve"):
-                    chore["status"] = "Approved"
-                    data["people"][person]["balance"] += chore["value"]
-                    if save_data_to_github(data, file_sha):
-                        st.rerun()
+                # Passing structural modifications out of runtime layout to dedicated handler callbacks
+                st.button("👍", key=f"app_{chore['id']}", help="Approve", on_click=handle_approval, args=(person, chore['id'], True))
             with btn_deny:
-                if st.button("👎", key=f"deny_{chore['id']}", help="Deny"):
-                    chore["status"] = "Denied"
-                    if save_data_to_github(data, file_sha):
-                        st.rerun()
+                st.button("👎", key=f"deny_{chore['id']}", help="Deny", on_click=handle_approval, args=(person, chore['id'], False))
 else:
     st.write("✅ No chores waiting for approval right now.")
 
@@ -151,27 +177,26 @@ if all_people:
         with col_pay:
             if info["balance"] > 0:
                 if st.button(f"Pay {person}", key=f"pay_{person}"):
-                    data["people"][person]["balance"] = 0.0
-                    for c in info["history"]:
+                    st.session_state.data["people"][person]["balance"] = 0.0
+                    for c in st.session_state.data["people"][person]["history"]:
                         if c.get("status") == "Approved":
                             c["status"] = "Paid"
-                    if save_data_to_github(data, file_sha):
-                        st.toast(f"Paid {person}!")
-                        st.rerun()
+                    save_data_to_github(st.session_state.data, st.session_state.file_sha)
+                    st.toast(f"Paid {person}!")
+                    del st.session_state.data
+                    st.rerun()
             else:
-                st.write(" Settled")
+                st.write("✨ Settled")
 
-        # History view with an absolute Delete button
         if info["history"]:
             with st.expander(f"View {person}'s History & Manage"):
                 for item in reversed(info.get("history", [])):
                     status = item.get("status", "Approved")
                     
-                    # Style based on status
                     if status == "Pending":
                         status_str = "⏳ Pending"
                     elif status == "Approved":
-                        status_str = "🟢 Approved (Unpaid)"
+                        status_str = "🟢 Approved"
                     elif status == "Denied":
                         status_str = "❌ Denied"
                     else:
@@ -181,17 +206,8 @@ if all_people:
                     with h_col1:
                         st.write(f"- {item['chore']}: **${item['value']:.2f}** ({status_str})")
                     with h_col2:
-                        # Give a trash can button to entirely clear a chore entry
-                        # Ensure we assign fallback structural IDs if running on older json entries
                         item_id = item.get("id", item['chore'])
-                        if st.button("🗑️", key=f"del_{item_id}_{person}", help="Permanently Delete Entry"):
-                            # If we delete an approved chore, subtract its value from their balance
-                            if status == "Approved":
-                                data["people"][person]["balance"] -= item["value"]
-                            
-                            info["history"].remove(item)
-                            if save_data_to_github(data, file_sha):
-                                st.rerun()
+                        st.button("🗑️", key=f"del_{item_id}_{person}", help="Permanently Delete Entry", on_click=handle_deletion, args=(person, item_id))
 else:
     st.write("No family profiles logged yet.")
 
@@ -200,7 +216,10 @@ st.sidebar.header("👤 Manage Family")
 new_person = st.sidebar.text_input("Add New Person:").strip()
 if st.sidebar.button("Add Person"):
     if new_person and new_person not in all_people:
-        data["people"][new_person] = {"balance": 0.0, "history": []}
-        if save_data_to_github(data, file_sha):
+        st.session_state.data["people"][new_person] = {"balance": 0.0, "history": []}
+        if save_data_to_github(st.session_state.data, st.session_state.file_sha):
             st.sidebar.success(f"Added {new_person}!")
+            del st.session_state.data
             st.rerun()
+    elif new_person in all_people:
+        st.sidebar.warning("Name already exists.")
