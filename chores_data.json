@@ -14,12 +14,6 @@
                     "chore": "\ud83c\udf7d\ufe0f Dishwasher (Load/Empty)",
                     "value": 2.0,
                     "status": "Pending"
-                },
-                {
-                    "id": "1782154996",
-                    "chore": "\ud83d\uddd1\ufe0f Take Out Trash/Recycling",
-                    "value": 1.5,
-                    "status": "Denied"
                 }
             ]
         }
