@@ -55,6 +55,10 @@ if "data" not in st.session_state or "file_sha" not in st.session_state:
     st.session_state.data = data
     st.session_state.file_sha = file_sha
 
+# Track login state persistently across user clicks
+if "is_admin" not in st.session_state:
+    st.session_state.is_admin = False
+
 data = st.session_state.data
 file_sha = st.session_state.file_sha
 all_people = list(data["people"].keys())
@@ -63,16 +67,14 @@ st.title("🧹 Chore & Payment Tracker")
 
 # --- ACTION HANDLERS ---
 def handle_submission(who, chore_name, value):
-    """Callback execution that fires immediately upon logging a chore."""
     if chore_name and chore_name != "➕ Custom Chore..." and value > 0:
         chore_id = str(int(time.time()))
         st.session_state.data["people"][who]["history"].append(
             {"id": chore_id, "chore": chore_name, "value": value, "status": "Pending"}
         )
         if save_data_to_github(st.session_state.data, st.session_state.file_sha):
-            # Flash a success flag into session state to show the user safely after rerun
             st.session_state.submit_success = f"Submitted '{chore_name}' for {who}! Waiting for approval."
-            del st.session_state.data  # Reset cache to fetch new SHA next cycle
+            del st.session_state.data
     else:
         st.session_state.submit_error = "Please ensure the chore has a description and a value greater than $0."
 
@@ -104,7 +106,7 @@ def handle_deletion(person, item_id):
     st.rerun()
 
 
-# --- DISPLAY STATUS ALERTS FROM CALLBACKS ---
+# --- DISPLAY STATUS ALERTS ---
 if "submit_success" in st.session_state:
     st.success(st.session_state.submit_success)
     del st.session_state.submit_success
@@ -112,6 +114,40 @@ if "submit_success" in st.session_state:
 if "submit_error" in st.session_state:
     st.error(st.session_state.submit_error)
     del st.session_state.submit_error
+
+
+# --- SIDEBAR: AUTHENTICATION & MANAGEMENT ---
+st.sidebar.header("🔒 Admin Portal")
+if not st.session_state.is_admin:
+    with st.sidebar.expander("🔑 Admin Login"):
+        pwd_input = st.text_input("Enter Password:", type="password")
+        if st.button("Login"):
+            if pwd_input == st.secrets["ADMIN_PASSWORD"]:
+                st.session_state.is_admin = True
+                st.rerun()
+            else:
+                st.error("Incorrect password.")
+else:
+    st.sidebar.success("🔓 Logged in as Admin")
+    if st.sidebar.button("Log Out"):
+        st.session_state.is_admin = False
+        st.rerun()
+
+st.sidebar.markdown("---")
+
+# Only show "Manage Family" profile creations if authenticated
+if st.session_state.is_admin:
+    st.sidebar.header("👤 Manage Family")
+    new_person = st.sidebar.text_input("Add New Person:").strip()
+    if st.sidebar.button("Add Person"):
+        if new_person and new_person not in all_people:
+            st.session_state.data["people"][new_person] = {"balance": 0.0, "history": []}
+            if save_data_to_github(st.session_state.data, st.session_state.file_sha):
+                st.sidebar.success(f"Added {new_person}!")
+                del st.session_state.data
+                st.rerun()
+        elif new_person in all_people:
+            st.sidebar.warning("Name already exists.")
 
 
 # --- SECTION 1: LOG A CHORE ---
@@ -135,14 +171,13 @@ if all_people:
             chore_name = selected_preset
             default_val = PRESET_CHORES[selected_preset]
             st.text_input("Chore Description:", value=chore_name, disabled=True, key="disabled_chore_input")
-            is_disabled = True 
+            is_disabled = True
             
     with col2:
         value = st.number_input(
             "Payout ($)", min_value=0.0, value=default_val, step=0.50, format="%.2f", disabled=is_disabled, key="payout_input"
         )
 
-    # Clean 1-click execution mapping
     st.button(
         "Submit for Approval", 
         type="primary", 
@@ -150,12 +185,12 @@ if all_people:
         args=(who, chore_name, value)
     )
 else:
-    st.info("👈 Start by adding a family member in the sidebar!")
+    st.info("👈 An Admin needs to log in and add a family profile to begin!")
 
 st.markdown("---")
 
 
-# --- SECTION 2: BALANCES (MOVED UP) ---
+# --- SECTION 2: BALANCES ---
 st.header("📊 Current Balances")
 if all_people:
     for person, info in data["people"].items():
@@ -166,21 +201,25 @@ if all_people:
         with col_bal:
             st.subheader(f"${info['balance']:.2f}")
         with col_pay:
+            # Pay buttons now strictly check if you are logged in as admin
             if info["balance"] > 0:
-                if st.button(f"Pay {person}", key=f"pay_{person}"):
-                    st.session_state.data["people"][person]["balance"] = 0.0
-                    for c in st.session_state.data["people"][person]["history"]:
-                        if c.get("status") == "Approved":
-                            c["status"] = "Paid"
-                    save_data_to_github(st.session_state.data, st.session_state.file_sha)
-                    st.toast(f"Paid {person}!")
-                    del st.session_state.data
-                    st.rerun()
+                if st.session_state.is_admin:
+                    if st.button(f"Pay {person}", key=f"pay_{person}"):
+                        st.session_state.data["people"][person]["balance"] = 0.0
+                        for c in st.session_state.data["people"][person]["history"]:
+                            if c.get("status") == "Approved":
+                                c["status"] = "Paid"
+                        save_data_to_github(st.session_state.data, st.session_state.file_sha)
+                        st.toast(f"Paid {person}!")
+                        del st.session_state.data
+                        st.rerun()
+                else:
+                    st.write("⏳ Awaiting Payment")
             else:
                 st.write("✨ Settled")
 
         if info["history"]:
-            with st.expander(f"View {person}'s History & Manage"):
+            with st.expander(f"View {person}'s History"):
                 for item in reversed(info.get("history", [])):
                     status = item.get("status", "Approved")
                     
@@ -193,53 +232,43 @@ if all_people:
                     else:
                         status_str = "✅ Paid"
                         
-                    h_col1, h_col2 = st.columns([4, 1])
-                    with h_col1:
+                    if st.session_state.is_admin:
+                        h_col1, h_col2 = st.columns([4, 1])
+                        with h_col1:
+                            st.write(f"- {item['chore']}: **${item['value']:.2f}** ({status_str})")
+                        with h_col2:
+                            item_id = item.get("id", item['chore'])
+                            st.button("🗑️", key=f"del_{item_id}_{person}", help="Permanently Delete Entry", on_click=handle_deletion, args=(person, item_id))
+                    else:
+                        # Non-admins just see clean text line without the trash icon options
                         st.write(f"- {item['chore']}: **${item['value']:.2f}** ({status_str})")
-                    with h_col2:
-                        item_id = item.get("id", item['chore'])
-                        st.button("🗑️", key=f"del_{item_id}_{person}", help="Permanently Delete Entry", on_click=handle_deletion, args=(person, item_id))
 else:
     st.write("No family profiles logged yet.")
 
-st.markdown("---")
 
+# --- SECTION 3: APPROVAL QUEUE (ADMIN RESTRICTED) ---
+if st.session_state.is_admin:
+    st.markdown("---")
+    st.header("🛡️ Admin Approvals")
+    pending_chores = []
 
-# --- SECTION 3: APPROVAL QUEUE (MOVED DOWN) ---
-st.header("🛡️ Admin Approvals")
-pending_chores = []
+    for person, info in data["people"].items():
+        for chore in info.get("history", []):
+            if chore.get("status") == "Pending":
+                pending_chores.append((person, chore))
 
-for person, info in data["people"].items():
-    for chore in info.get("history", []):
-        if chore.get("status") == "Pending":
-            pending_chores.append((person, chore))
-
-if pending_chores:
-    for person, chore in pending_chores:
-        c_col1, c_col2, c_col3 = st.columns([2, 1, 1.5])
-        with c_col1:
-            st.write(f"**{person}**: {chore['chore']}")
-        with c_col2:
-            st.write(f"${chore['value']:.2f}")
-        with c_col3:
-            btn_app, btn_deny = st.columns(2)
-            with btn_app:
-                st.button("👍", key=f"app_{chore['id']}", help="Approve", on_click=handle_approval, args=(person, chore['id'], True))
-            with btn_deny:
-                st.button("👎", key=f"deny_{chore['id']}", help="Deny", on_click=handle_approval, args=(person, chore['id'], False))
-else:
-    st.write("✅ No chores waiting for approval right now.")
-
-
-# --- SIDEBAR: MANAGE FAMILY ---
-st.sidebar.header("👤 Manage Family")
-new_person = st.sidebar.text_input("Add New Person:").strip()
-if st.sidebar.button("Add Person"):
-    if new_person and new_person not in all_people:
-        st.session_state.data["people"][new_person] = {"balance": 0.0, "history": []}
-        if save_data_to_github(st.session_state.data, st.session_state.file_sha):
-            st.sidebar.success(f"Added {new_person}!")
-            del st.session_state.data
-            st.rerun()
-    elif new_person in all_people:
-        st.sidebar.warning("Name already exists.")
+    if pending_chores:
+        for person, chore in pending_chores:
+            c_col1, c_col2, c_col3 = st.columns([2, 1, 1.5])
+            with c_col1:
+                st.write(f"**{person}**: {chore['chore']}")
+            with c_col2:
+                st.write(f"${chore['value']:.2f}")
+            with c_col3:
+                btn_app, btn_deny = st.columns(2)
+                with btn_app:
+                    st.button("👍", key=f"app_{chore['id']}", help="Approve", on_click=handle_approval, args=(person, chore['id'], True))
+                with btn_deny:
+                    st.button("👎", key=f"deny_{chore['id']}", help="Deny", on_click=handle_approval, args=(person, chore['id'], False))
+    else:
+        st.write("✅ No chores waiting for approval right now.")
