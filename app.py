@@ -84,28 +84,29 @@ if all_people:
         default="🧹 Vacuuming"
     )
     
-    # 3. Dynamic Inputs based on the selected pill
+    # 3. Dynamic Inputs based on the selected pill (with a safety fallback if unselected)
     col1, col2 = st.columns([2, 1])
     
     with col1:
-        if selected_preset == "➕ Custom Chore...":
+        # If "Custom" is picked OR nothing is selected at all (selected_preset is None)
+        if selected_preset == "➕ Custom Chore..." or selected_preset is None:
             chore_name = st.text_input("Chore Description:", placeholder="e.g., Cleaned windows")
             default_val = 0.00
+            is_disabled = False
         else:
-            # Strip the emoji out for the history save file if preferred, or keep it clean
             chore_name = selected_preset
             default_val = PRESET_CHORES[selected_preset]
             st.text_input("Chore Description:", value=chore_name, disabled=True)
+            is_disabled = True
             
     with col2:
-        # If it's a preset, it pre-populates the exact cash amount automatically
         value = st.number_input(
             "Payout ($)", 
             min_value=0.0, 
             value=default_val, 
             step=0.50, 
             format="%.2f",
-            disabled=(selected_preset != "➕ Custom Chore...") # locks amount for presets
+            disabled=is_disabled
         )
 
     if st.button("Log Chore", type="primary"):
