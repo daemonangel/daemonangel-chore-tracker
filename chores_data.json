@@ -1,13 +1,13 @@
 {
     "people": {
         "Lexi": {
-            "balance": 0.0,
+            "balance": 2.0,
             "history": [
                 {
                     "id": "1782157684",
                     "chore": "\ud83e\uddfc High-Touch Sanitize (Knobs, remotes, switches)",
                     "value": 2.0,
-                    "status": "Pending"
+                    "status": "Approved"
                 }
             ]
         }
