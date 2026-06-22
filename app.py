@@ -55,14 +55,28 @@ if "data" not in st.session_state or "file_sha" not in st.session_state:
     st.session_state.data = data
     st.session_state.file_sha = file_sha
 
-# Local pointer aliases for easier code readability
 data = st.session_state.data
 file_sha = st.session_state.file_sha
 all_people = list(data["people"].keys())
 
 st.title("🧹 Chore & Payment Tracker")
 
-# --- ACTION HANDLERS (Forces instantaneous state adjustments) ---
+# --- ACTION HANDLERS ---
+def handle_submission(who, chore_name, value):
+    """Callback execution that fires immediately upon logging a chore."""
+    if chore_name and chore_name != "➕ Custom Chore..." and value > 0:
+        chore_id = str(int(time.time()))
+        st.session_state.data["people"][who]["history"].append(
+            {"id": chore_id, "chore": chore_name, "value": value, "status": "Pending"}
+        )
+        if save_data_to_github(st.session_state.data, st.session_state.file_sha):
+            # Flash a success flag into session state to show the user safely after rerun
+            st.session_state.submit_success = f"Submitted '{chore_name}' for {who}! Waiting for approval."
+            del st.session_state.data  # Reset cache to fetch new SHA next cycle
+    else:
+        st.session_state.submit_error = "Please ensure the chore has a description and a value greater than $0."
+
+
 def handle_approval(person, chore_id, approved=True):
     for chore in st.session_state.data["people"][person]["history"]:
         if chore.get("id") == chore_id:
@@ -73,6 +87,7 @@ def handle_approval(person, chore_id, approved=True):
                 chore["status"] = "Denied"
             break
     save_data_to_github(st.session_state.data, st.session_state.file_sha)
+    del st.session_state.data
     st.rerun()
 
 
@@ -85,7 +100,18 @@ def handle_deletion(person, item_id):
             history_list.remove(item)
             break
     save_data_to_github(st.session_state.data, st.session_state.file_sha)
+    del st.session_state.data
     st.rerun()
+
+
+# --- DISPLAY STATUS ALERTS FROM CALLBACKS ---
+if "submit_success" in st.session_state:
+    st.success(st.session_state.submit_success)
+    del st.session_state.submit_success
+
+if "submit_error" in st.session_state:
+    st.error(st.session_state.submit_error)
+    del st.session_state.submit_error
 
 
 # --- SECTION 1: LOG A CHORE ---
@@ -102,69 +128,33 @@ if all_people:
     col1, col2 = st.columns([2, 1])
     with col1:
         if selected_preset == "➕ Custom Chore..." or selected_preset is None:
-            chore_name = st.text_input("Chore Description:", placeholder="e.g., Cleaned windows")
+            chore_name = st.text_input("Chore Description:", placeholder="e.g., Cleaned windows", key="custom_chore_input")
             default_val = 0.00
             is_disabled = False
         else:
             chore_name = selected_preset
             default_val = PRESET_CHORES[selected_preset]
-            st.text_input("Chore Description:", value=chore_name, disabled=True)
-            is_disabled = True
+            st.text_input("Chore Description:", value=chore_name, disabled=True, key="disabled_chore_input")
             
     with col2:
         value = st.number_input(
-            "Payout ($)", min_value=0.0, value=default_val, step=0.50, format="%.2f", disabled=is_disabled
+            "Payout ($)", min_value=0.0, value=default_val, step=0.50, format="%.2f", disabled=is_disabled, key="payout_input"
         )
 
-    if st.button("Submit for Approval", type="primary"):
-        if chore_name and chore_name != "➕ Custom Chore..." and value > 0:
-            chore_id = str(int(time.time()))
-            st.session_state.data["people"][who]["history"].append(
-                {"id": chore_id, "chore": chore_name, "value": value, "status": "Pending"}
-            )
-            if save_data_to_github(st.session_state.data, st.session_state.file_sha):
-                st.success(f"Submitted '{chore_name}' for {who}! Waiting for approval.")
-                # Clear session storage cache to fetch fresh SHA tag next build
-                del st.session_state.data
-                st.rerun()
-        else:
-            st.error("Please ensure the chore has a description and a value greater than $0.")
+    # Clean 1-click execution mapping
+    st.button(
+        "Submit for Approval", 
+        type="primary", 
+        on_click=handle_submission, 
+        args=(who, chore_name, value)
+    )
 else:
     st.info("👈 Start by adding a family member in the sidebar!")
 
 st.markdown("---")
 
 
-# --- SECTION 2: APPROVAL QUEUE (ADMIN) ---
-st.header("🛡️ Admin Approvals")
-pending_chores = []
-
-for person, info in data["people"].items():
-    for chore in info.get("history", []):
-        if chore.get("status") == "Pending":
-            pending_chores.append((person, chore))
-
-if pending_chores:
-    for person, chore in pending_chores:
-        c_col1, c_col2, c_col3 = st.columns([2, 1, 1.5])
-        with c_col1:
-            st.write(f"**{person}**: {chore['chore']}")
-        with c_col2:
-            st.write(f"${chore['value']:.2f}")
-        with c_col3:
-            btn_app, btn_deny = st.columns(2)
-            with btn_app:
-                # Passing structural modifications out of runtime layout to dedicated handler callbacks
-                st.button("👍", key=f"app_{chore['id']}", help="Approve", on_click=handle_approval, args=(person, chore['id'], True))
-            with btn_deny:
-                st.button("👎", key=f"deny_{chore['id']}", help="Deny", on_click=handle_approval, args=(person, chore['id'], False))
-else:
-    st.write("✅ No chores waiting for approval right now.")
-
-st.markdown("---")
-
-
-# --- SECTION 3: BALANCES & HISTORY REMOVAL ---
+# --- SECTION 2: BALANCES (MOVED UP) ---
 st.header("📊 Current Balances")
 if all_people:
     for person, info in data["people"].items():
@@ -211,7 +201,36 @@ if all_people:
 else:
     st.write("No family profiles logged yet.")
 
-# Sidebar Settings
+st.markdown("---")
+
+
+# --- SECTION 3: APPROVAL QUEUE (MOVED DOWN) ---
+st.header("🛡️ Admin Approvals")
+pending_chores = []
+
+for person, info in data["people"].items():
+    for chore in info.get("history", []):
+        if chore.get("status") == "Pending":
+            pending_chores.append((person, chore))
+
+if pending_chores:
+    for person, chore in pending_chores:
+        c_col1, c_col2, c_col3 = st.columns([2, 1, 1.5])
+        with c_col1:
+            st.write(f"**{person}**: {chore['chore']}")
+        with c_col2:
+            st.write(f"${chore['value']:.2f}")
+        with c_col3:
+            btn_app, btn_deny = st.columns(2)
+            with btn_app:
+                st.button("👍", key=f"app_{chore['id']}", help="Approve", on_click=handle_approval, args=(person, chore['id'], True))
+            with btn_deny:
+                st.button("👎", key=f"deny_{chore['id']}", help="Deny", on_click=handle_approval, args=(person, chore['id'], False))
+else:
+    st.write("✅ No chores waiting for approval right now.")
+
+
+# --- SIDEBAR: MANAGE FAMILY ---
 st.sidebar.header("👤 Manage Family")
 new_person = st.sidebar.text_input("Add New Person:").strip()
 if st.sidebar.button("Add Person"):
