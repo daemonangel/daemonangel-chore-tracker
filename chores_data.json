@@ -1,15 +1,8 @@
 {
     "people": {
         "Lexi": {
-            "balance": 3.0,
-            "history": [
-                {
-                    "id": "1782157159",
-                    "chore": "\ud83e\uddfa Laundry Service (Wash, Dry, Fold & Put Away)",
-                    "value": 3.0,
-                    "status": "Approved"
-                }
-            ]
+            "balance": 0.0,
+            "history": []
         }
     }
 }
