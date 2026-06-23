@@ -1,15 +1,8 @@
 {
     "people": {
         "Lexi": {
-            "balance": 2.0,
-            "history": [
-                {
-                    "id": "1782243875",
-                    "chore": "\ud83d\uddd1\ufe0f Take Out Trash/Recycling",
-                    "value": 2.0,
-                    "status": "Approved"
-                }
-            ]
+            "balance": 0.0,
+            "history": []
         }
     }
 }
