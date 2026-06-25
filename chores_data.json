@@ -1,15 +1,8 @@
 {
     "people": {
         "Lexi": {
-            "balance": 6.0,
-            "history": [
-                {
-                    "id": "1782244613",
-                    "chore": "\ud83e\uddf9 Vacuum & Mop Downstairs or Upstairs",
-                    "value": 6.0,
-                    "status": "Approved"
-                }
-            ]
+            "balance": 0.0,
+            "history": []
         }
     }
 }
