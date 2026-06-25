@@ -8,12 +8,6 @@
                     "chore": "\ud83e\uddf9 Vacuum & Mop Downstairs or Upstairs",
                     "value": 6.0,
                     "status": "Approved"
-                },
-                {
-                    "id": "1782405617",
-                    "chore": "\ud83c\udf73 Cook a Family Meal & Clean Kitchen",
-                    "value": 6.0,
-                    "status": "Pending"
                 }
             ]
         }
