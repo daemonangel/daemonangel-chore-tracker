@@ -8,6 +8,12 @@
                     "chore": "\ud83e\uddfd Clean Kitchen (dishes and all surfaces)",
                     "value": 4.0,
                     "status": "Approved"
+                },
+                {
+                    "id": "1782675482",
+                    "chore": "\ud83e\uddfa Full Laundry Service (Wash, Dry, Fold & Put Away)",
+                    "value": 4.0,
+                    "status": "Pending"
                 }
             ]
         }
