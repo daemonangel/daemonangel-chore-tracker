@@ -1,7 +1,7 @@
 {
     "people": {
         "Lexi": {
-            "balance": 6.0,
+            "balance": 10.0,
             "history": [
                 {
                     "id": "1782407746",
@@ -13,7 +13,7 @@
                     "id": "1782675482",
                     "chore": "\ud83e\uddfa Full Laundry Service (Wash, Dry, Fold & Put Away)",
                     "value": 4.0,
-                    "status": "Pending"
+                    "status": "Approved"
                 },
                 {
                     "id": "1782770298",
