@@ -20,6 +20,12 @@
                     "chore": "\ud83c\udf7d\ufe0f Dishwasher (Load or Empty)",
                     "value": 2.0,
                     "status": "Approved"
+                },
+                {
+                    "id": "1782861062",
+                    "chore": "Cleaned station ",
+                    "value": 1.0,
+                    "status": "Pending"
                 }
             ]
         }
