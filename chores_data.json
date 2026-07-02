@@ -1,7 +1,7 @@
 {
     "people": {
         "Lexi": {
-            "balance": 10.0,
+            "balance": 11.0,
             "history": [
                 {
                     "id": "1782407746",
@@ -25,7 +25,7 @@
                     "id": "1782861062",
                     "chore": "Cleaned station ",
                     "value": 1.0,
-                    "status": "Pending"
+                    "status": "Approved"
                 }
             ]
         }
