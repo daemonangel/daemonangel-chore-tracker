@@ -32,6 +32,12 @@
                     "chore": "\ud83c\udf73 Cook a Family Meal",
                     "value": 4.0,
                     "status": "Approved"
+                },
+                {
+                    "id": "1783468767",
+                    "chore": "\ud83c\udf73 Cook a Family Meal",
+                    "value": 4.0,
+                    "status": "Pending"
                 }
             ]
         }
