@@ -1,7 +1,7 @@
 {
     "people": {
         "Lexi": {
-            "balance": 19.0,
+            "balance": 20.0,
             "history": [
                 {
                     "id": "1782407746",
@@ -43,7 +43,7 @@
                     "id": "1783469943",
                     "chore": "\ud83e\uddfa Partial Laundry Service (Wash, Dry, Fold OR Put Away)",
                     "value": 1.0,
-                    "status": "Pending"
+                    "status": "Approved"
                 }
             ]
         }
