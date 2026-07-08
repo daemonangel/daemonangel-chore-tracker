@@ -38,6 +38,12 @@
                     "chore": "\ud83c\udf73 Cook a Family Meal",
                     "value": 4.0,
                     "status": "Approved"
+                },
+                {
+                    "id": "1783469943",
+                    "chore": "\ud83e\uddfa Partial Laundry Service (Wash, Dry, Fold OR Put Away)",
+                    "value": 1.0,
+                    "status": "Pending"
                 }
             ]
         }
