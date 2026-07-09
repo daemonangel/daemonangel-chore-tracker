@@ -62,6 +62,12 @@
                     "chore": "\ud83e\uddfa Full Laundry Service (Wash, Dry, Fold & Put Away)",
                     "value": 4.0,
                     "status": "Pending"
+                },
+                {
+                    "id": "1783613331",
+                    "chore": "Cleaned off countertops with soap and water ",
+                    "value": 4.0,
+                    "status": "Pending"
                 }
             ]
         }
