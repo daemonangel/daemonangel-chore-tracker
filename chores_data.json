@@ -74,6 +74,12 @@
                     "chore": "\ud83e\uddfd Clean Kitchen (dishes and all surfaces)",
                     "value": 4.0,
                     "status": "Pending"
+                },
+                {
+                    "id": "1783616528",
+                    "chore": "\ud83c\udf73 Cook a Family Meal",
+                    "value": 4.0,
+                    "status": "Pending"
                 }
             ]
         }
