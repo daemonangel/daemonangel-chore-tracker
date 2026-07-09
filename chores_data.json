@@ -68,6 +68,12 @@
                     "chore": "Cleaned off countertops with soap and water ",
                     "value": 4.0,
                     "status": "Pending"
+                },
+                {
+                    "id": "1783616523",
+                    "chore": "\ud83e\uddfd Clean Kitchen (dishes and all surfaces)",
+                    "value": 4.0,
+                    "status": "Pending"
                 }
             ]
         }
