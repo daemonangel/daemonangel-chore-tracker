@@ -50,6 +50,12 @@
                     "chore": "\ud83e\uddfa Partial Laundry Service (Wash, Dry, Fold OR Put Away)",
                     "value": 1.0,
                     "status": "Pending"
+                },
+                {
+                    "id": "1783612442",
+                    "chore": "Folded laundry ",
+                    "value": 2.5,
+                    "status": "Pending"
                 }
             ]
         }
