@@ -86,6 +86,12 @@
                     "chore": "\ud83c\udf7d\ufe0f Dishwasher (Load or Empty)",
                     "value": 2.0,
                     "status": "Pending"
+                },
+                {
+                    "id": "1783618116",
+                    "chore": "Cleaned pan",
+                    "value": 2.0,
+                    "status": "Pending"
                 }
             ]
         }
