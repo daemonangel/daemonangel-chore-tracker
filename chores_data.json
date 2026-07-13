@@ -98,6 +98,12 @@
                     "chore": "\ud83e\uddfc Deep Clean Bathroom (Toilet/Sink/Shower)",
                     "value": 8.0,
                     "status": "Pending"
+                },
+                {
+                    "id": "1783905293",
+                    "chore": "\ud83e\uddfd Clean Kitchen (dishes and all surfaces)",
+                    "value": 4.0,
+                    "status": "Pending"
                 }
             ]
         }
