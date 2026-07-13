@@ -104,6 +104,12 @@
                     "chore": "\ud83e\uddfd Clean Kitchen (dishes and all surfaces)",
                     "value": 4.0,
                     "status": "Pending"
+                },
+                {
+                    "id": "1783905412",
+                    "chore": "Dried dishes",
+                    "value": 3.5,
+                    "status": "Pending"
                 }
             ]
         }
