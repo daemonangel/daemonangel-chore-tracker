@@ -110,6 +110,12 @@
                     "chore": "Dried dishes",
                     "value": 3.5,
                     "status": "Pending"
+                },
+                {
+                    "id": "1783906099",
+                    "chore": "Cleaned counter tops and dried them ",
+                    "value": 3.5,
+                    "status": "Pending"
                 }
             ]
         }
