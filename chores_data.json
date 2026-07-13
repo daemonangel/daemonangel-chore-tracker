@@ -92,6 +92,12 @@
                     "chore": "Cleaned pan",
                     "value": 2.0,
                     "status": "Approved"
+                },
+                {
+                    "id": "1783905270",
+                    "chore": "\ud83e\uddfc Deep Clean Bathroom (Toilet/Sink/Shower)",
+                    "value": 8.0,
+                    "status": "Pending"
                 }
             ]
         }
