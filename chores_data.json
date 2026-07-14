@@ -116,6 +116,12 @@
                     "chore": "Cleaned counter tops and dried them ",
                     "value": 3.5,
                     "status": "Pending"
+                },
+                {
+                    "id": "1783991098",
+                    "chore": "Deep cleaned 2 sinks",
+                    "value": 10.0,
+                    "status": "Pending"
                 }
             ]
         }
