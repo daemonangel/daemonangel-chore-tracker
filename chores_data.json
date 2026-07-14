@@ -122,6 +122,12 @@
                     "chore": "Deep cleaned 2 sinks",
                     "value": 10.0,
                     "status": "Pending"
+                },
+                {
+                    "id": "1783991108",
+                    "chore": "\ud83e\uddfd Clean Kitchen (dishes and all surfaces)",
+                    "value": 4.0,
+                    "status": "Pending"
                 }
             ]
         }
