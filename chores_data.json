@@ -140,6 +140,12 @@
                     "chore": "Dried dishes",
                     "value": 2.0,
                     "status": "Pending"
+                },
+                {
+                    "id": "1783991163",
+                    "chore": "Cleaned containers and pot ",
+                    "value": 4.0,
+                    "status": "Pending"
                 }
             ]
         }
