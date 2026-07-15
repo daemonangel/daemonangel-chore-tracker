@@ -146,6 +146,12 @@
                     "chore": "Cleaned containers and pot ",
                     "value": 4.0,
                     "status": "Pending"
+                },
+                {
+                    "id": "1784074294",
+                    "chore": "\ud83c\udf7d\ufe0f Dishwasher (Load or Empty)",
+                    "value": 2.0,
+                    "status": "Pending"
                 }
             ]
         }
