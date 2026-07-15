@@ -176,6 +176,12 @@
                     "chore": "Cleaned countertops",
                     "value": 5.0,
                     "status": "Pending"
+                },
+                {
+                    "id": "1784074371",
+                    "chore": "Cleaned pot",
+                    "value": 3.0,
+                    "status": "Pending"
                 }
             ]
         }
