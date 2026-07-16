@@ -1,7 +1,7 @@
 {
     "people": {
         "Lexi": {
-            "balance": 23.0,
+            "balance": 28.0,
             "history": [
                 {
                     "id": "1782407746",
@@ -175,7 +175,7 @@
                     "id": "1784074346",
                     "chore": "Cleaned countertops",
                     "value": 5.0,
-                    "status": "Pending"
+                    "status": "Approved"
                 },
                 {
                     "id": "1784074371",
