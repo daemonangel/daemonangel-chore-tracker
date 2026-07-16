@@ -1,7 +1,7 @@
 {
     "people": {
         "Lexi": {
-            "balance": 44.0,
+            "balance": 48.0,
             "history": [
                 {
                     "id": "1782407746",
@@ -103,7 +103,7 @@
                     "id": "1783905293",
                     "chore": "\ud83e\uddfd Clean Kitchen (dishes and all surfaces)",
                     "value": 4.0,
-                    "status": "Pending"
+                    "status": "Approved"
                 },
                 {
                     "id": "1783905412",
