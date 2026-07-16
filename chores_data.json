@@ -1,7 +1,7 @@
 {
     "people": {
         "Lexi": {
-            "balance": 48.0,
+            "balance": 56.0,
             "history": [
                 {
                     "id": "1782407746",
@@ -97,7 +97,7 @@
                     "id": "1783905270",
                     "chore": "\ud83e\uddfc Deep Clean Bathroom (Toilet/Sink/Shower)",
                     "value": 8.0,
-                    "status": "Pending"
+                    "status": "Approved"
                 },
                 {
                     "id": "1783905293",
