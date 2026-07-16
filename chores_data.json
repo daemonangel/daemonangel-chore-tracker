@@ -1,7 +1,7 @@
 {
     "people": {
         "Lexi": {
-            "balance": 32.0,
+            "balance": 34.0,
             "history": [
                 {
                     "id": "1782407746",
@@ -157,7 +157,7 @@
                     "id": "1784074299",
                     "chore": "\ud83c\udf7d\ufe0f Dishwasher (Load or Empty)",
                     "value": 2.0,
-                    "status": "Pending"
+                    "status": "Approved"
                 },
                 {
                     "id": "1784074316",
