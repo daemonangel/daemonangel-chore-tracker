@@ -7,187 +7,218 @@
                     "id": "1782407746",
                     "chore": "\ud83e\uddfd Clean Kitchen (dishes and all surfaces)",
                     "value": 4.0,
-                    "status": "Paid"
+                    "status": "Paid",
+                    "timestamp": "07/10/26 at 12:00 PM"
                 },
                 {
                     "id": "1782675482",
                     "chore": "\ud83e\uddfa Full Laundry Service (Wash, Dry, Fold & Put Away)",
                     "value": 4.0,
-                    "status": "Paid"
+                    "status": "Paid",
+                    "timestamp": "07/10/26 at 12:00 PM"
                 },
                 {
                     "id": "1782770298",
                     "chore": "\ud83c\udf7d\ufe0f Dishwasher (Load or Empty)",
                     "value": 2.0,
-                    "status": "Paid"
+                    "status": "Paid",
+                    "timestamp": "07/10/26 at 12:00 PM"
                 },
                 {
                     "id": "1782861062",
                     "chore": "Cleaned station ",
                     "value": 1.0,
-                    "status": "Paid"
+                    "status": "Paid",
+                    "timestamp": "07/10/26 at 12:00 PM"
                 },
                 {
                     "id": "1783021051",
                     "chore": "\ud83c\udf73 Cook a Family Meal",
                     "value": 4.0,
-                    "status": "Paid"
+                    "status": "Paid",
+                    "timestamp": "07/10/26 at 12:00 PM"
                 },
                 {
                     "id": "1783468767",
                     "chore": "\ud83c\udf73 Cook a Family Meal",
                     "value": 4.0,
-                    "status": "Paid"
+                    "status": "Paid",
+                    "timestamp": "07/10/26 at 12:00 PM"
                 },
                 {
                     "id": "1783469943",
                     "chore": "\ud83e\uddfa Partial Laundry Service (Wash, Dry, Fold OR Put Away)",
                     "value": 1.0,
-                    "status": "Paid"
+                    "status": "Paid",
+                    "timestamp": "07/11/26 at 12:00 PM"
                 },
                 {
                     "id": "1783612417",
                     "chore": "\ud83e\uddfa Partial Laundry Service (Wash, Dry, Fold OR Put Away)",
                     "value": 1.0,
-                    "status": "Denied"
+                    "status": "Denied",
+                    "timestamp": "07/11/26 at 12:00 PM"
                 },
                 {
                     "id": "1783612442",
                     "chore": "Folded laundry ",
                     "value": 2.5,
-                    "status": "Denied"
+                    "status": "Denied",
+                    "timestamp": "07/11/26 at 12:00 PM"
                 },
                 {
                     "id": "1783612466",
                     "chore": "\ud83e\uddfa Full Laundry Service (Wash, Dry, Fold & Put Away)",
                     "value": 4.0,
-                    "status": "Approved"
+                    "status": "Approved",
+                    "timestamp": "07/11/26 at 12:00 PM"
                 },
                 {
                     "id": "1783613331",
                     "chore": "Cleaned off countertops with soap and water ",
                     "value": 4.0,
-                    "status": "Approved"
+                    "status": "Approved",
+                    "timestamp": "07/14/26 at 12:00 PM"
                 },
                 {
                     "id": "1783616523",
                     "chore": "\ud83e\uddfd Clean Kitchen (dishes and all surfaces)",
                     "value": 4.0,
-                    "status": "Approved"
+                    "status": "Approved",
+                    "timestamp": "07/14/26 at 12:00 PM"
                 },
                 {
                     "id": "1783616528",
                     "chore": "\ud83c\udf73 Cook a Family Meal",
                     "value": 4.0,
-                    "status": "Approved"
+                    "status": "Approved",
+                    "timestamp": "07/14/26 at 12:00 PM"
                 },
                 {
                     "id": "1783617064",
                     "chore": "\ud83c\udf7d\ufe0f Dishwasher (Load or Empty)",
                     "value": 2.0,
-                    "status": "Approved"
+                    "status": "Approved",
+                    "timestamp": "07/14/26 at 12:00 PM"
                 },
                 {
                     "id": "1783618116",
                     "chore": "Cleaned pan",
                     "value": 2.0,
-                    "status": "Approved"
+                    "status": "Approved",
+                    "timestamp": "07/14/26 at 12:00 PM"
                 },
                 {
                     "id": "1783905270",
                     "chore": "\ud83e\uddfc Deep Clean Bathroom (Toilet/Sink/Shower)",
                     "value": 8.0,
-                    "status": "Approved"
+                    "status": "Approved",
+                    "timestamp": "07/14/26 at 12:00 PM"
                 },
                 {
                     "id": "1783905293",
                     "chore": "\ud83e\uddfd Clean Kitchen (dishes and all surfaces)",
                     "value": 4.0,
-                    "status": "Approved"
+                    "status": "Approved",
+                    "timestamp": "07/14/26 at 12:00 PM"
                 },
                 {
                     "id": "1783905412",
                     "chore": "Dried dishes",
                     "value": 3.5,
-                    "status": "Approved"
+                    "status": "Approved",
+                    "timestamp": "07/14/26 at 12:00 PM"
                 },
                 {
                     "id": "1783906099",
                     "chore": "Cleaned counter tops and dried them ",
                     "value": 3.5,
-                    "status": "Approved"
+                    "status": "Approved",
+                    "timestamp": "07/14/26 at 12:00 PM"
                 },
                 {
                     "id": "1783991098",
                     "chore": "Deep cleaned 2 sinks",
                     "value": 10.0,
-                    "status": "Denied"
+                    "status": "Denied",
+                    "timestamp": "07/14/26 at 12:00 PM"
                 },
                 {
                     "id": "1783991108",
                     "chore": "\ud83e\uddfd Clean Kitchen (dishes and all surfaces)",
                     "value": 4.0,
-                    "status": "Approved"
+                    "status": "Approved",
+                    "timestamp": "07/14/26 at 12:00 PM"
                 },
                 {
                     "id": "1783991138",
                     "chore": "Dried dishes",
                     "value": 2.0,
-                    "status": "Denied"
+                    "status": "Denied",
+                    "timestamp": "07/14/26 at 12:00 PM"
                 },
                 {
                     "id": "1783991139",
                     "chore": "Dried dishes",
                     "value": 2.0,
-                    "status": "Denied"
+                    "status": "Denied",
+                    "timestamp": "07/14/26 at 12:00 PM"
                 },
                 {
                     "id": "1783991163",
                     "chore": "Cleaned containers and pot ",
                     "value": 4.0,
-                    "status": "Approved"
+                    "status": "Approved",
+                    "timestamp": "07/14/26 at 12:00 PM"
                 },
                 {
                     "id": "1784074294",
                     "chore": "\ud83c\udf7d\ufe0f Dishwasher (Load or Empty)",
                     "value": 2.0,
-                    "status": "Approved"
+                    "status": "Approved",
+                    "timestamp": "07/14/26 at 12:00 PM"
                 },
                 {
                     "id": "1784074299",
                     "chore": "\ud83c\udf7d\ufe0f Dishwasher (Load or Empty)",
                     "value": 2.0,
-                    "status": "Approved"
+                    "status": "Approved",
+                    "timestamp": "07/14/26 at 12:00 PM"
                 },
                 {
                     "id": "1784074316",
                     "chore": "Deep cleaned sink ",
                     "value": 8.0,
-                    "status": "Approved"
+                    "status": "Approved",
+                    "timestamp": "07/14/26 at 12:00 PM"
                 },
                 {
                     "id": "1784074332",
                     "chore": "\ud83e\uddfd Clean Kitchen (dishes and all surfaces)",
                     "value": 4.0,
-                    "status": "Approved"
+                    "status": "Approved",
+                    "timestamp": "07/14/26 at 12:00 PM"
                 },
                 {
                     "id": "1784074346",
                     "chore": "Cleaned countertops",
                     "value": 5.0,
-                    "status": "Approved"
+                    "status": "Approved",
+                    "timestamp": "07/14/26 at 12:00 PM"
                 },
                 {
                     "id": "1784074371",
                     "chore": "Cleaned pot",
                     "value": 3.0,
-                    "status": "Approved"
+                    "status": "Approved",
+                    "timestamp": "07/14/26 at 12:00 PM"
                 },
                 {
                     "id": "1784312410",
                     "chore": "\ud83e\uddfa Partial Laundry Service (Wash, Dry, Fold OR Put Away)",
                     "value": 1.0,
-                    "status": "Denied"
+                    "status": "Denied",
+                    "timestamp": "07/14/26 at 12:00 PM"
                 },
                 {
                     "id": "1784314005",
