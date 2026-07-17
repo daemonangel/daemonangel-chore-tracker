@@ -227,23 +227,24 @@ if all_people:
     )
     
     col1, col2 = st.columns([2, 1])
-    with col1:
-        if selected_preset == "➕ Custom Chore..." or selected_preset is None:
+    if selected_preset == "➕ Custom Chore..." or selected_preset is None:
+        with col1:
             chore_name = st.text_input("Chore Description:", placeholder="e.g., Cleaned windows", key="custom_chore_input")
-            default_val = 0.00
-            is_disabled = False
-        else:
-            chore_name = selected_preset
-            default_val = PRESET_CHORES[selected_preset]
-            # 💡 FIXED: Changed selected_preset.2f to just selected_preset
-            st.text_input("Chore Description:", value=chore_name, disabled=True, key=f"disabled_{selected_preset}")
-            is_disabled = True
+        with col2:
+            value = st.number_input("Payout ($)", min_value=0.0, value=0.00, step=0.50, format="%.2f", key="custom_payout_input")
+    else:
+        chore_name = selected_preset
+        default_val = PRESET_CHORES[selected_preset]
+        value = default_val
+        
+        # 💡 FIX: Instead of disabled text inputs, use bright, clean Markdown formatting
+        with col1:
+            st.markdown(f"**Chore Description:**\n\n {chore_name}")
+        with col2:
+            st.markdown(f"**Payout ($):**\n\n  ### ${value:.2f}")
             
-    with col2:
-        # 💡 FIXED: Changed selected_preset.2f to just selected_preset
-        value = st.number_input(
-            "Payout ($)", min_value=0.0, value=default_val, step=0.50, format="%.2f", disabled=is_disabled, key=f"payout_{selected_preset}"
-        )
+        # Add a tiny bit of spacing so the button doesn't hug the text
+        st.write("")
 
     st.button(
         "Submit for Approval", 
