@@ -68,7 +68,45 @@ def save_data_to_github(data, sha=None):
         st.error(f"GitHub Sync Failed: {response.text}")
         return False
 
-
+def prune_old_history(data):
+    current_time = datetime.now()
+    updated = False
+    
+    for person, info in data["people"].items():
+        clean_history = []
+        for item in info.get("history", []):
+            status = item.get("status")
+            keep_item = True
+            
+            # 1. Prune Denied entries after 30 days (uses original submission timestamp)
+            if status == "Denied" and "timestamp" in item:
+                try:
+                    entry_date = datetime.strptime(item["timestamp"], "%m/%d/%y at %I:%M %p")
+                    if (current_time - entry_date).days > 30:
+                        keep_item = False
+                        updated = True
+                except ValueError:
+                    pass # Skip if formatting doesn't match perfectly
+                    
+            # 2. Prune Paid entries after 30 days (uses the paid_timestamp you are adding)
+            elif status == "Paid" and "paid_timestamp" in item:
+                try:
+                    pay_date = datetime.strptime(item["paid_timestamp"], "%m/%d/%y at %I:%M %p")
+                    if (current_time - pay_date).days > 30:
+                        keep_item = False
+                        updated = True
+                except ValueError:
+                    pass
+            
+            if keep_item:
+                clean_history.append(item)
+                
+        info["history"] = clean_history
+        
+    # Save the pruned data back to GitHub automatically if items were removed
+    if updated:
+        save_data_to_github(data, st.session_state.file_sha)
+        
 # --- INITIALIZE DATA & SESSION STATE ---
 if "data" not in st.session_state or "file_sha" not in st.session_state:
     data, file_sha = load_data_from_github()
