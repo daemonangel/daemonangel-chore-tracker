@@ -65,7 +65,6 @@ if "data" not in st.session_state or "file_sha" not in st.session_state:
     st.session_state.data = data
     st.session_state.file_sha = file_sha
 
-# Track login state persistently across user clicks
 if "is_admin" not in st.session_state:
     st.session_state.is_admin = False
 
@@ -75,12 +74,22 @@ all_people = list(data["people"].keys())
 
 st.title("🧹 Daemonangel Chore Tracker")
 
+
 # --- ACTION HANDLERS ---
 def handle_submission(who, chore_name, value):
     if chore_name and chore_name != "➕ Custom Chore..." and value > 0:
         chore_id = str(int(time.time()))
+        # ⏱️ CAPTURE TIMESTAMP: Format as "MM/DD/YY at hh:mm AM/PM"
+        timestamp = datetime.now().strftime("%m/%d/%y at %I:%M %p")
+        
         st.session_state.data["people"][who]["history"].append(
-            {"id": chore_id, "chore": chore_name, "value": value, "status": "Pending"}
+            {
+                "id": chore_id, 
+                "chore": chore_name, 
+                "value": value, 
+                "status": "Pending",
+                "timestamp": timestamp  # Added to database object
+            }
         )
         if save_data_to_github(st.session_state.data, st.session_state.file_sha):
             st.session_state.submit_success = f"Submitted '{chore_name}' for {who}! Waiting for approval."
@@ -99,8 +108,6 @@ def handle_approval(person, chore_id, approved=True):
                 chore["status"] = "Denied"
             break
     save_data_to_github(st.session_state.data, st.session_state.file_sha)
-    #del st.session_state.data
-    #st.rerun()
 
 
 def handle_deletion(person, item_id):
@@ -112,8 +119,6 @@ def handle_deletion(person, item_id):
             history_list.remove(item)
             break
     save_data_to_github(st.session_state.data, st.session_state.file_sha)
-    #del st.session_state.data
-    #st.rerun()
 
 
 # --- DISPLAY STATUS ALERTS ---
@@ -145,7 +150,6 @@ else:
 
 st.sidebar.markdown("---")
 
-# Only show "Manage Family" profile creations if authenticated
 if st.session_state.is_admin:
     st.sidebar.header("👤 Manage Family")
     new_person = st.sidebar.text_input("Add New Person:").strip()
@@ -168,7 +172,7 @@ if all_people:
     selected_preset = st.pills(
         "Select a preset job:", 
         options=list(PRESET_CHORES.keys()), 
-        default="🧹 Vacuuming"
+        default="🛋️ Common Space Reset (Clutter put away)"
     )
     
     col1, col2 = st.columns([2, 1])
@@ -180,12 +184,10 @@ if all_people:
         else:
             chore_name = selected_preset
             default_val = PRESET_CHORES[selected_preset]
-            # 💡 FIX: We use a dynamic key based on the selected preset name so Streamlit updates instantly
             st.text_input("Chore Description:", value=chore_name, disabled=True, key=f"disabled_{selected_preset}")
             is_disabled = True
             
     with col2:
-        # 💡 FIX: We also make this key dynamic so the dollar value snaps to the new price instantly
         value = st.number_input(
             "Payout ($)", min_value=0.0, value=default_val, step=0.50, format="%.2f", disabled=is_disabled, key=f"payout_{selected_preset}"
         )
@@ -213,14 +215,16 @@ if all_people:
         with col_bal:
             st.subheader(f"${info['balance']:.2f}")
         with col_pay:
-            # Pay buttons now strictly check if you are logged in as admin
             if info["balance"] > 0:
                 if st.session_state.is_admin:
                     if st.button(f"Pay {person}", key=f"pay_{person}"):
                         st.session_state.data["people"][person]["balance"] = 0.0
+                        timestamp_payout = datetime.now().strftime("%m/%d/%y at %I:%M %p")
                         for c in st.session_state.data["people"][person]["history"]:
                             if c.get("status") == "Approved":
                                 c["status"] = "Paid"
+                                # Append payout execution date to history line item
+                                c["paid_timestamp"] = timestamp_payout
                         save_data_to_github(st.session_state.data, st.session_state.file_sha)
                         st.toast(f"Paid {person}!")
                         del st.session_state.data
@@ -234,6 +238,7 @@ if all_people:
             with st.expander(f"View {person}'s History"):
                 for item in reversed(info.get("history", [])):
                     status = item.get("status", "Approved")
+                    time_stamp = item.get("timestamp", "Prior Entry")
                     
                     if status == "Pending":
                         status_str = "⏳ Pending"
@@ -242,18 +247,18 @@ if all_people:
                     elif status == "Denied":
                         status_str = "❌ Denied"
                     else:
-                        status_str = "✅ Paid"
+                        payout_time = item.get("paid_timestamp", "")
+                        status_str = f"✅ Paid {payout_time}".strip()
                         
-                    if st.session_state.is_admin:
-                        h_col1, h_col2 = st.columns([4, 1])
-                        with h_col1:
-                            st.write(f"- {item['chore']}: **${item['value']:.2f}** ({status_str})")
-                        with h_col2:
+                    h_col1, h_col2 = st.columns([4, 1])
+                    with h_col1:
+                        # Displays clean string containing the submission timestamp
+                        st.write(f"**{item['chore']}** — ${item['value']:.2f}")
+                        st.caption(f"Logged: {time_stamp} | Status: {status_str}")
+                    with h_col2:
+                        if st.session_state.is_admin:
                             item_id = item.get("id", item['chore'])
                             st.button("🗑️", key=f"del_{item_id}_{person}", help="Permanently Delete Entry", on_click=handle_deletion, args=(person, item_id))
-                    else:
-                        # Non-admins just see clean text line without the trash icon options
-                        st.write(f"- {item['chore']}: **${item['value']:.2f}** ({status_str})")
 else:
     st.write("No family profiles logged yet.")
 
@@ -274,6 +279,7 @@ if st.session_state.is_admin:
             c_col1, c_col2, c_col3 = st.columns([2, 1, 1.5])
             with c_col1:
                 st.write(f"**{person}**: {chore['chore']}")
+                st.caption(f"Submitted: {chore.get('timestamp', 'N/A')}")
             with c_col2:
                 st.write(f"${chore['value']:.2f}")
             with c_col3:
