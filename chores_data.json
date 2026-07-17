@@ -219,13 +219,6 @@
                     "value": 1.0,
                     "status": "Denied",
                     "timestamp": "07/14/26 at 12:00 PM"
-                },
-                {
-                    "id": "1784314005",
-                    "chore": "\ud83c\udf9b\ufe0f Microwave (Clean Inside & Out)",
-                    "value": 2.0,
-                    "status": "Pending",
-                    "timestamp": "07/17/26 at 06:46 PM"
                 }
             ]
         }
