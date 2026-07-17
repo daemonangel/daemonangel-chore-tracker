@@ -182,6 +182,12 @@
                     "chore": "Cleaned pot",
                     "value": 3.0,
                     "status": "Approved"
+                },
+                {
+                    "id": "1784312410",
+                    "chore": "\ud83e\uddfa Partial Laundry Service (Wash, Dry, Fold OR Put Away)",
+                    "value": 1.0,
+                    "status": "Pending"
                 }
             ]
         }
