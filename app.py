@@ -133,6 +133,7 @@ st.title("🧹 Chore & Payment Tracker")
 
 # --- ACTION HANDLERS ---
 def handle_submission(who, chore_name, value):
+    # Allows both positive chores and negative deductions, but blocks $0.00
     if chore_name and chore_name != "➕ Custom Chore..." and value != 0:
         chore_id = str(int(time.time()))
         timestamp = datetime.now().strftime("%m/%d/%y at %I:%M %p")
@@ -150,7 +151,7 @@ def handle_submission(who, chore_name, value):
             st.session_state.submit_success = f"Submitted '{chore_name}' for {who}! Waiting for approval."
             del st.session_state.data
     else:
-        st.session_state.submit_error = "Please ensure the chore has a description and a value greater than $0."
+        st.session_state.submit_error = "Please ensure the chore has a description and a value layout other than $0.00."
 
 
 def handle_approval(person, chore_id, approved=True):
@@ -246,8 +247,9 @@ if all_people:
     col1, col2 = st.columns([2, 1])
     if selected_preset == "➕ Custom Chore..." or selected_preset is None:
         with col1:
-            chore_name = st.text_input("Chore Description:", placeholder="e.g., Cleaned windows", key="custom_chore_input")
+            chore_name = st.text_input("Chore Description:", placeholder="e.g., Unreturned library book fine", key="custom_chore_input")
         with col2:
+            # 💡 Removed min_value so negative inputs work
             value = st.number_input("Payout ($)", value=0.00, step=0.50, format="%.2f", key="custom_payout_input")
     else:
         chore_name = selected_preset
@@ -326,12 +328,13 @@ if all_people:
                         if status == "Pending":
                             status_str = "⏳ Pending"
                         elif status == "Approved":
-                            status_str = "🟢 Approved"
+                            # 💡 Check if it's a negative balance change
+                            status_str = "🔴 Deduction" if item['value'] < 0 else "🟢 Approved"
                         elif status == "Denied":
                             status_str = "❌ Denied"
                         else:
                             payout_time = item.get("paid_timestamp", "")
-                            status_str = f"✅ Paid {payout_time}".strip()
+                            status_str = f"🛑 Deduction Applied {payout_time}".strip() if item['value'] < 0 else f"✅ Paid {payout_time}".strip()
                             
                         h_col1, h_col2 = st.columns([4, 1])
                         with h_col1:
