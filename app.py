@@ -99,7 +99,7 @@ def handle_approval(person, chore_id, approved=True):
                 chore["status"] = "Denied"
             break
     save_data_to_github(st.session_state.data, st.session_state.file_sha)
-    del st.session_state.data
+    #del st.session_state.data
     st.rerun()
 
 
@@ -112,7 +112,7 @@ def handle_deletion(person, item_id):
             history_list.remove(item)
             break
     save_data_to_github(st.session_state.data, st.session_state.file_sha)
-    del st.session_state.data
+    #del st.session_state.data
     st.rerun()
 
 
