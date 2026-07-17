@@ -16,14 +16,18 @@ PRESET_CHORES = {
     "🗑️ Take Out Trash/Recycling": 2.00,
     "🎛️ Microwave (Clean Inside & Out)": 2.00,
     "🧼 High-Touch Sanitize (Knobs, remotes, switches)": 2.00,
+    "🚽 Clean Toilet": 2.00,
     "🪶 Dusting & Wiping Shared Living Spaces": 3.00,
     "🧹 Vacuuming": 3.00,
-    "🧺 Full Laundry Service (Wash, Dry, Fold & Put Away)": 4.00,
+    "🍽️ Dry Dishes": 3.00,
+    "🍲 Hand Clean Pot, Pan, or Container": 3.00,
+    "✨ Clean and Dry Kitchen Counters": 4.00,
     "🧊 Fridge Cleanout & Organize": 4.00,
     "🍳 Cook a Family Meal": 4.00,
-    "🧽 Clean Kitchen (dishes and all surfaces)": 4.00,
-    "🧹 Vacuum & Mop Downstairs or Upstairs": 6.00,
-    "🧼 Deep Clean Bathroom (Toilet/Sink/Shower)": 8.00,
+    "🚿 Deep clean sink": 4.00,
+    "🧺 Full Laundry Service (Wash, Dry, Fold & Put Away)": 5.00,
+    "🧹 Floor cleaning (Vacuum & Mop)": 5.00,
+    "🧽 Deep Clean Bathroom (Toilet/Sink/Shower)": 8.00,
     "🚗 Wash Car": 10.00,
     "➕ Custom Chore...": 0.00
 }
@@ -244,7 +248,7 @@ if all_people:
         with col1:
             chore_name = st.text_input("Chore Description:", placeholder="e.g., Cleaned windows", key="custom_chore_input")
         with col2:
-            value = st.number_input("Payout ($)", min_value=0.0, value=0.00, step=0.50, format="%.2f", key="custom_payout_input")
+            value = st.number_input("Payout ($)", value=0.00, step=0.50, format="%.2f", key="custom_payout_input")
     else:
         chore_name = selected_preset
         default_val = PRESET_CHORES[selected_preset]
