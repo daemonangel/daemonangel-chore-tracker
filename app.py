@@ -225,7 +225,7 @@ st.header("💰 Log a Chore")
 if all_people:
     who = st.selectbox("Who did it?", all_people)
     
-    # 💡 FIX 1: Show prices directly inside the dropdown selection list
+    # 1. Dropdown options with prices
     dropdown_options = []
     for chore, price in PRESET_CHORES.items():
         if chore == "➕ Custom Chore...":
@@ -238,28 +238,28 @@ if all_people:
         options=dropdown_options
     )
     
-    # Extract the original dictionary key back out to handle the logic properly
+    # Extract original key out
     if " — $" in selected_display:
         selected_preset = selected_display.split(" — $")[0]
     else:
         selected_preset = selected_display
     
+    # 2. Build the columns for inputs/display
     col1, col2 = st.columns([2, 1])
+    
     if selected_preset == "➕ Custom Chore..." or selected_preset is None:
         with col1:
             chore_name = st.text_input("Chore Description:", placeholder="e.g., Unreturned library book fine", key="custom_chore_input")
         with col2:
-            # 💡 Removed min_value so negative inputs work
             value = st.number_input("Payout ($)", value=0.00, step=0.50, format="%.2f", key="custom_payout_input")
     else:
         chore_name = selected_preset
         default_val = PRESET_CHORES[selected_preset]
         value = default_val
         
-        # 💡 FIX 2: Aligned the text layout vertically so they sit on the same baseline
         with col1:
             st.markdown("**Chore Description:**")
-            st.caption("") # Acts as a clean visual vertical spacer
+            st.caption("") 
             st.write(chore_name)
         with col2:
             st.markdown("**Payout ($):**")
@@ -267,6 +267,17 @@ if all_people:
             
         st.write("")
 
+    # 3. THE BUTTON (Must be aligned under 'if all_people:', outside the chore-type check)
+    st.button(
+        "Submit for Approval", 
+        type="primary", 
+        on_click=handle_submission, 
+        args=(who, chore_name, value)
+    )
+else:
+    st.info("👈 An Admin needs to log in and add a family profile to begin!")
+
+st.markdown("---")
 
 # --- SECTION 2: BALANCES ---
 st.header("📊 Current Balances")
