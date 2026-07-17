@@ -100,7 +100,7 @@ def handle_approval(person, chore_id, approved=True):
             break
     save_data_to_github(st.session_state.data, st.session_state.file_sha)
     #del st.session_state.data
-    st.rerun()
+    #st.rerun()
 
 
 def handle_deletion(person, item_id):
@@ -113,7 +113,7 @@ def handle_deletion(person, item_id):
             break
     save_data_to_github(st.session_state.data, st.session_state.file_sha)
     #del st.session_state.data
-    st.rerun()
+    #st.rerun()
 
 
 # --- DISPLAY STATUS ALERTS ---
