@@ -220,10 +220,10 @@ st.header("💰 Log a Chore")
 if all_people:
     who = st.selectbox("Who did it?", all_people)
     
-    selected_preset = st.pills(
-        "Select a preset job:", 
-        options=list(PRESET_CHORES.keys()), 
-        default="🛋️ Common Space Reset (Clutter put away)"
+    # 💡 FIX: Replaced st.pills with a clean, searchable selectbox
+    selected_preset = st.selectbox(
+        "Select or search a preset job:", 
+        options=list(PRESET_CHORES.keys())
     )
     
     col1, col2 = st.columns([2, 1])
@@ -235,12 +235,12 @@ if all_people:
         else:
             chore_name = selected_preset
             default_val = PRESET_CHORES[selected_preset]
-            st.text_input("Chore Description:", value=chore_name, disabled=True, key=f"disabled_{selected_preset}")
+            st.text_input("Chore Description:", value=chore_name, disabled=True, key=f"disabled_{selected_preset.2f}")
             is_disabled = True
             
     with col2:
         value = st.number_input(
-            "Payout ($)", min_value=0.0, value=default_val, step=0.50, format="%.2f", disabled=is_disabled, key=f"payout_{selected_preset}"
+            "Payout ($)", min_value=0.0, value=default_val, step=0.50, format="%.2f", disabled=is_disabled, key=f"payout_{selected_preset.2f}"
         )
 
     st.button(
