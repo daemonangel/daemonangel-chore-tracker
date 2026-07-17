@@ -235,12 +235,14 @@ if all_people:
         else:
             chore_name = selected_preset
             default_val = PRESET_CHORES[selected_preset]
-            st.text_input("Chore Description:", value=chore_name, disabled=True, key=f"disabled_{selected_preset.2f}")
+            # 💡 FIXED: Changed selected_preset.2f to just selected_preset
+            st.text_input("Chore Description:", value=chore_name, disabled=True, key=f"disabled_{selected_preset}")
             is_disabled = True
             
     with col2:
+        # 💡 FIXED: Changed selected_preset.2f to just selected_preset
         value = st.number_input(
-            "Payout ($)", min_value=0.0, value=default_val, step=0.50, format="%.2f", disabled=is_disabled, key=f"payout_{selected_preset.2f}"
+            "Payout ($)", min_value=0.0, value=default_val, step=0.50, format="%.2f", disabled=is_disabled, key=f"payout_{selected_preset}"
         )
 
     st.button(
