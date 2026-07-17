@@ -1,7 +1,7 @@
 {
     "people": {
         "Lexi": {
-            "balance": 71.0,
+            "balance": 70.0,
             "history": [
                 {
                     "id": "1782407746",
@@ -238,7 +238,7 @@
                     "id": "1784318887",
                     "chore": "Tidy up bathroom after doing hair",
                     "value": -1.0,
-                    "status": "Pending",
+                    "status": "Approved",
                     "timestamp": "07/17/26 at 08:08 PM"
                 }
             ]
