@@ -61,8 +61,8 @@
                 },
                 {
                     "id": "pay_manual_legacy_1",
-                    "chore": "💰 Paid Out Total Balance",
-                    "value": 20.00,
+                    "chore": "\ud83d\udcb0 Paid Out Total Balance",
+                    "value": 20.0,
                     "status": "Payout",
                     "timestamp": "07/7/26 at 05:30 PM"
                 },
@@ -233,6 +233,13 @@
                     "value": 1.0,
                     "status": "Denied",
                     "timestamp": "07/14/26 at 12:00 PM"
+                },
+                {
+                    "id": "1784318887",
+                    "chore": "Tidy up bathroom after doing hair",
+                    "value": -1.0,
+                    "status": "Pending",
+                    "timestamp": "07/17/26 at 08:08 PM"
                 }
             ]
         }
