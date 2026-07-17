@@ -8,49 +8,56 @@
                     "chore": "\ud83e\uddfd Clean Kitchen (dishes and all surfaces)",
                     "value": 4.0,
                     "status": "Paid",
-                    "timestamp": "07/10/26 at 12:00 PM"
+                    "timestamp": "07/06/26 at 12:00 PM",
+                    "paid_timestamp": "07/07/26 at 05:30 PM"
                 },
                 {
                     "id": "1782675482",
                     "chore": "\ud83e\uddfa Full Laundry Service (Wash, Dry, Fold & Put Away)",
                     "value": 4.0,
                     "status": "Paid",
-                    "timestamp": "07/10/26 at 12:00 PM"
+                    "timestamp": "07/06/26 at 12:00 PM",
+                    "paid_timestamp": "07/07/26 at 05:30 PM"
                 },
                 {
                     "id": "1782770298",
                     "chore": "\ud83c\udf7d\ufe0f Dishwasher (Load or Empty)",
                     "value": 2.0,
                     "status": "Paid",
-                    "timestamp": "07/10/26 at 12:00 PM"
+                    "timestamp": "07/06/26 at 12:00 PM",
+                    "paid_timestamp": "07/07/26 at 05:30 PM"
                 },
                 {
                     "id": "1782861062",
                     "chore": "Cleaned station ",
                     "value": 1.0,
                     "status": "Paid",
-                    "timestamp": "07/10/26 at 12:00 PM"
+                    "timestamp": "07/06/26 at 12:00 PM",
+                    "paid_timestamp": "07/07/26 at 05:30 PM"
                 },
                 {
                     "id": "1783021051",
                     "chore": "\ud83c\udf73 Cook a Family Meal",
                     "value": 4.0,
                     "status": "Paid",
-                    "timestamp": "07/10/26 at 12:00 PM"
+                    "timestamp": "07/06/26 at 12:00 PM",
+                    "paid_timestamp": "07/07/26 at 05:30 PM"
                 },
                 {
                     "id": "1783468767",
                     "chore": "\ud83c\udf73 Cook a Family Meal",
                     "value": 4.0,
                     "status": "Paid",
-                    "timestamp": "07/10/26 at 12:00 PM"
+                    "timestamp": "07/06/26 at 12:00 PM",
+                    "paid_timestamp": "07/07/26 at 05:30 PM"
                 },
                 {
                     "id": "1783469943",
                     "chore": "\ud83e\uddfa Partial Laundry Service (Wash, Dry, Fold OR Put Away)",
                     "value": 1.0,
                     "status": "Paid",
-                    "timestamp": "07/11/26 at 12:00 PM"
+                    "timestamp": "07/06/26 at 12:00 PM",
+                    "paid_timestamp": "07/07/26 at 05:30 PM"
                 },
                 {
                     "id": "1783612417",
