@@ -60,6 +60,13 @@
                     "paid_timestamp": "07/07/26 at 05:30 PM"
                 },
                 {
+                    "id": "pay_manual_legacy_1",
+                    "chore": "💰 Paid Out Total Balance",
+                    "value": 15.00,
+                    "status": "Payout",
+                    "timestamp": "07/10/26 at 05:30 PM"
+                }
+                {
                     "id": "1783612417",
                     "chore": "\ud83e\uddfa Partial Laundry Service (Wash, Dry, Fold OR Put Away)",
                     "value": 1.0,
