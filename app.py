@@ -133,7 +133,7 @@ st.title("🧹 Chore & Payment Tracker")
 
 # --- ACTION HANDLERS ---
 def handle_submission(who, chore_name, value):
-    if chore_name and chore_name != "➕ Custom Chore..." and value > 0:
+    if chore_name and chore_name != "➕ Custom Chore..." and value != 0:
         chore_id = str(int(time.time()))
         timestamp = datetime.now().strftime("%m/%d/%y at %I:%M %p")
         
