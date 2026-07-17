@@ -220,11 +220,24 @@ st.header("💰 Log a Chore")
 if all_people:
     who = st.selectbox("Who did it?", all_people)
     
-    # 💡 FIX: Replaced st.pills with a clean, searchable selectbox
-    selected_preset = st.selectbox(
+    # 💡 FIX 1: Show prices directly inside the dropdown selection list
+    dropdown_options = []
+    for chore, price in PRESET_CHORES.items():
+        if chore == "➕ Custom Chore...":
+            dropdown_options.append(chore)
+        else:
+            dropdown_options.append(f"{chore} — ${price:.2f}")
+
+    selected_display = st.selectbox(
         "Select or search a preset job:", 
-        options=list(PRESET_CHORES.keys())
+        options=dropdown_options
     )
+    
+    # Extract the original dictionary key back out to handle the logic properly
+    if " — $" in selected_display:
+        selected_preset = selected_display.split(" — $")[0]
+    else:
+        selected_preset = selected_display
     
     col1, col2 = st.columns([2, 1])
     if selected_preset == "➕ Custom Chore..." or selected_preset is None:
@@ -237,25 +250,16 @@ if all_people:
         default_val = PRESET_CHORES[selected_preset]
         value = default_val
         
-        # 💡 FIX: Instead of disabled text inputs, use bright, clean Markdown formatting
+        # 💡 FIX 2: Aligned the text layout vertically so they sit on the same baseline
         with col1:
-            st.markdown(f"**Chore Description:**\n\n {chore_name}")
+            st.markdown("**Chore Description:**")
+            st.caption("") # Acts as a clean visual vertical spacer
+            st.write(chore_name)
         with col2:
-            st.markdown(f"**Payout ($):**\n\n  ### ${value:.2f}")
+            st.markdown("**Payout ($):**")
+            st.markdown(f"### ${value:.2f}")
             
-        # Add a tiny bit of spacing so the button doesn't hug the text
         st.write("")
-
-    st.button(
-        "Submit for Approval", 
-        type="primary", 
-        on_click=handle_submission, 
-        args=(who, chore_name, value)
-    )
-else:
-    st.info("👈 An Admin needs to log in and add a family profile to begin!")
-
-st.markdown("---")
 
 
 # --- SECTION 2: BALANCES ---
