@@ -78,7 +78,7 @@ def prune_old_history(data):
             status = item.get("status")
             keep_item = True
             
-            # 1. Prune Denied entries after 30 days (uses original submission timestamp)
+            # 1. Prune Denied entries after 30 days
             if status == "Denied" and "timestamp" in item:
                 try:
                     entry_date = datetime.strptime(item["timestamp"], "%m/%d/%y at %I:%M %p")
@@ -86,9 +86,9 @@ def prune_old_history(data):
                         keep_item = False
                         updated = True
                 except ValueError:
-                    pass # Skip if formatting doesn't match perfectly
+                    pass
                     
-            # 2. Prune Paid entries after 30 days (uses the paid_timestamp you are adding)
+            # 2. Prune individual Paid chores after 30 days
             elif status == "Paid" and "paid_timestamp" in item:
                 try:
                     pay_date = datetime.strptime(item["paid_timestamp"], "%m/%d/%y at %I:%M %p")
@@ -98,20 +98,24 @@ def prune_old_history(data):
                 except ValueError:
                     pass
             
+            # Note: Items with status "Payout" are explicitly skipped here so they are NEVER pruned.
             if keep_item:
                 clean_history.append(item)
                 
         info["history"] = clean_history
         
-    # Save the pruned data back to GitHub automatically if items were removed
     if updated:
         save_data_to_github(data, st.session_state.file_sha)
-        
+
+
 # --- INITIALIZE DATA & SESSION STATE ---
 if "data" not in st.session_state or "file_sha" not in st.session_state:
     data, file_sha = load_data_from_github()
     st.session_state.data = data
     st.session_state.file_sha = file_sha
+    
+    if st.session_state.data and "people" in st.session_state.data:
+        prune_old_history(st.session_state.data)
 
 if "is_admin" not in st.session_state:
     st.session_state.is_admin = False
@@ -120,14 +124,13 @@ data = st.session_state.data
 file_sha = st.session_state.file_sha
 all_people = list(data["people"].keys())
 
-st.title("🧹 Daemonangel Chore Tracker")
+st.title("🧹 Chore & Payment Tracker")
 
 
 # --- ACTION HANDLERS ---
 def handle_submission(who, chore_name, value):
     if chore_name and chore_name != "➕ Custom Chore..." and value > 0:
         chore_id = str(int(time.time()))
-        # ⏱️ CAPTURE TIMESTAMP: Format as "MM/DD/YY at hh:mm AM/PM"
         timestamp = datetime.now().strftime("%m/%d/%y at %I:%M %p")
         
         st.session_state.data["people"][who]["history"].append(
@@ -136,7 +139,7 @@ def handle_submission(who, chore_name, value):
                 "chore": chore_name, 
                 "value": value, 
                 "status": "Pending",
-                "timestamp": timestamp  # Added to database object
+                "timestamp": timestamp
             }
         )
         if save_data_to_github(st.session_state.data, st.session_state.file_sha):
@@ -266,13 +269,27 @@ if all_people:
             if info["balance"] > 0:
                 if st.session_state.is_admin:
                     if st.button(f"Pay {person}", key=f"pay_{person}"):
-                        st.session_state.data["people"][person]["balance"] = 0.0
+                        current_balance = info["balance"]
                         timestamp_payout = datetime.now().strftime("%m/%d/%y at %I:%M %p")
+                        
+                        # 1. Flip active approved chores to Paid
                         for c in st.session_state.data["people"][person]["history"]:
                             if c.get("status") == "Approved":
                                 c["status"] = "Paid"
-                                # Append payout execution date to history line item
                                 c["paid_timestamp"] = timestamp_payout
+                        
+                        # 2. Inject the permanent, protected Payout Receipt line item
+                        st.session_state.data["people"][person]["history"].append({
+                            "id": f"pay_{int(time.time())}",
+                            "chore": "💰 Paid Out Total Balance",
+                            "value": current_balance,
+                            "status": "Payout",
+                            "timestamp": timestamp_payout
+                        })
+                        
+                        # 3. Reset running tab balance
+                        st.session_state.data["people"][person]["balance"] = 0.0
+                        
                         save_data_to_github(st.session_state.data, st.session_state.file_sha)
                         st.toast(f"Paid {person}!")
                         del st.session_state.data
@@ -283,30 +300,55 @@ if all_people:
                 st.write("✨ Settled")
 
         if info["history"]:
-            with st.expander(f"View {person}'s History"):
-                for item in reversed(info.get("history", [])):
-                    status = item.get("status", "Approved")
-                    time_stamp = item.get("timestamp", "Prior Entry")
-                    
-                    if status == "Pending":
-                        status_str = "⏳ Pending"
-                    elif status == "Approved":
-                        status_str = "🟢 Approved"
-                    elif status == "Denied":
-                        status_str = "❌ Denied"
-                    else:
-                        payout_time = item.get("paid_timestamp", "")
-                        status_str = f"✅ Paid {payout_time}".strip()
+            # 🔍 Separate chores from receipts using list comprehensions
+            all_items = info.get("history", [])
+            chore_items = [item for item in all_items if item.get("status") != "Payout"]
+            payout_items = [item for item in all_items if item.get("status") == "Payout"]
+
+            # --- EXPANDER 1: CHORE HISTORY ---
+            with st.expander(f"📋 View {person}'s Chore History"):
+                if chore_items:
+                    for item in reversed(chore_items):
+                        status = item.get("status", "Approved")
+                        time_stamp = item.get("timestamp", "Prior Entry")
                         
-                    h_col1, h_col2 = st.columns([4, 1])
-                    with h_col1:
-                        # Displays clean string containing the submission timestamp
-                        st.write(f"**{item['chore']}** — ${item['value']:.2f}")
-                        st.caption(f"Logged: {time_stamp} | Status: {status_str}")
-                    with h_col2:
-                        if st.session_state.is_admin:
-                            item_id = item.get("id", item['chore'])
-                            st.button("🗑️", key=f"del_{item_id}_{person}", help="Permanently Delete Entry", on_click=handle_deletion, args=(person, item_id))
+                        if status == "Pending":
+                            status_str = "⏳ Pending"
+                        elif status == "Approved":
+                            status_str = "🟢 Approved"
+                        elif status == "Denied":
+                            status_str = "❌ Denied"
+                        else:
+                            payout_time = item.get("paid_timestamp", "")
+                            status_str = f"✅ Paid {payout_time}".strip()
+                            
+                        h_col1, h_col2 = st.columns([4, 1])
+                        with h_col1:
+                            st.write(f"**{item['chore']}** — ${item['value']:.2f}")
+                            st.caption(f"Logged: {time_stamp} | Status: {status_str}")
+                        with h_col2:
+                            if st.session_state.is_admin:
+                                item_id = item.get("id", item['chore'])
+                                st.button("🗑️", key=f"del_{item_id}_{person}", help="Permanently Delete Entry", on_click=handle_deletion, args=(person, item_id))
+                else:
+                    st.write("No chore history to show right now.")
+
+            # --- EXPANDER 2: PAYMENT HISTORY ---
+            with st.expander(f"💵 View {person}'s Payment History"):
+                if payout_items:
+                    for item in reversed(payout_items):
+                        h_col1, h_col2 = st.columns([4, 1])
+                        with h_col1:
+                            # Clean receipt format showing the amount and exact payout date
+                            st.write(f"**{item['chore']}** — ${item['value']:.2f}")
+                            st.caption(f"Cleared On: {item['timestamp']}")
+                        with h_col2:
+                            if st.session_state.is_admin:
+                                item_id = item.get("id")
+                                # Allows you to manually strike down a wrong payment entry if needed
+                                st.button("🗑️", key=f"del_receipt_{item_id}_{person}", help="Delete Payment Receipt Record", on_click=handle_deletion, args=(person, item_id))
+                else:
+                    st.write("✨ No payments have been logged yet.")
 else:
     st.write("No family profiles logged yet.")
 
