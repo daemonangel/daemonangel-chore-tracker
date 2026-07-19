@@ -266,6 +266,13 @@
                     "value": 70.0,
                     "status": "Payout",
                     "timestamp": "07/17/26 at 08:10 PM"
+                },
+                {
+                    "id": "1784473557",
+                    "chore": "\ud83e\uddfa Partial Laundry Service (Wash, Dry, Fold OR Put Away)",
+                    "value": 1.0,
+                    "status": "Pending",
+                    "timestamp": "07/19/26 at 03:05 PM"
                 }
             ]
         }
