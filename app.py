@@ -74,7 +74,7 @@ def save_data_to_github(data, sha=None):
         return False
 
 def prune_old_history(data):
-    current_time = datetime.now(ZoneInfo("America/New_York")).strftime("%m/%d/%y at %I:%M %p")
+    current_time = datetime.now(ZoneInfo("America/New_York"))
     updated = False
     
     for person, info in data["people"].items():
@@ -137,7 +137,7 @@ def handle_submission(who, chore_name, value):
     # Allows both positive chores and negative deductions, but blocks $0.00
     if chore_name and chore_name != "➕ Custom Chore..." and value != 0:
         chore_id = str(int(time.time()))
-        timestamp = datetime.now(ZoneInfo("America/New_York")).strftime("%m/%d/%y at %I:%M %p").strftime("%m/%d/%y at %I:%M %p")
+        timestamp = datetime.now(ZoneInfo("America/New_York")).strftime("%m/%d/%y at %I:%M %p")
         
         st.session_state.data["people"][who]["history"].append(
             {
@@ -295,7 +295,7 @@ if all_people:
                 if st.session_state.is_admin:
                     if st.button(f"Pay {person}", key=f"pay_{person}"):
                         current_balance = info["balance"]
-                        timestamp_payout = datetime.now(ZoneInfo("America/New_York")).strftime("%m/%d/%y at %I:%M %p").strftime("%m/%d/%y at %I:%M %p")
+                        timestamp_payout = datetime.now(ZoneInfo("America/New_York")).strftime("%m/%d/%y at %I:%M %p")
                         
                         # 1. Flip active approved chores to Paid
                         for c in st.session_state.data["people"][person]["history"]:
