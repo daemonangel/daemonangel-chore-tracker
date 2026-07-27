@@ -1,7 +1,7 @@
 {
     "people": {
         "Lexi": {
-            "balance": 14.0,
+            "balance": 18.0,
             "history": [
                 {
                     "id": "1782407746",
@@ -306,7 +306,7 @@
                     "id": "1785113906",
                     "chore": "\u2728 Clean and Dry Kitchen Counters",
                     "value": 4.0,
-                    "status": "Pending",
+                    "status": "Approved",
                     "timestamp": "07/26/26 at 8:58 PM"
                 }
             ]
