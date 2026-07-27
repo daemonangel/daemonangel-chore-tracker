@@ -74,7 +74,7 @@ def save_data_to_github(data, sha=None):
         return False
 
 def prune_old_history(data):
-    current_time = datetime.now(ZoneInfo("America/New_York"))
+    current_time = datetime.now()
     updated = False
     
     for person, info in data["people"].items():
