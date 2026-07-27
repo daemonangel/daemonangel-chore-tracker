@@ -287,6 +287,13 @@
                     "value": 3.0,
                     "status": "Pending",
                     "timestamp": "07/27/26 at 12:55 AM"
+                },
+                {
+                    "id": "1785113894",
+                    "chore": "\ud83c\udf72 Hand Clean Pot, Pan, or Container",
+                    "value": 3.0,
+                    "status": "Pending",
+                    "timestamp": "07/27/26 at 12:58 AM"
                 }
             ]
         }
