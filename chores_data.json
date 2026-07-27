@@ -1,7 +1,7 @@
 {
     "people": {
         "Lexi": {
-            "balance": 1.0,
+            "balance": 4.0,
             "history": [
                 {
                     "id": "1782407746",
@@ -278,7 +278,7 @@
                     "id": "1785034578",
                     "chore": "\ud83c\udf7d\ufe0f Dry Dishes",
                     "value": 3.0,
-                    "status": "Pending",
+                    "status": "Approved",
                     "timestamp": "07/25/26 at 09:56 PM"
                 },
                 {
