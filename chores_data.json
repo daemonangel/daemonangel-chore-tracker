@@ -280,6 +280,13 @@
                     "value": 3.0,
                     "status": "Pending",
                     "timestamp": "07/26/26 at 02:56 AM"
+                },
+                {
+                    "id": "1785113708",
+                    "chore": "\ud83c\udf7d\ufe0f Dry Dishes",
+                    "value": 3.0,
+                    "status": "Pending",
+                    "timestamp": "07/27/26 at 12:55 AM"
                 }
             ]
         }
