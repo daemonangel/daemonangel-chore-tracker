@@ -294,6 +294,13 @@
                     "value": 3.0,
                     "status": "Pending",
                     "timestamp": "07/27/26 at 12:58 AM"
+                },
+                {
+                    "id": "1785113902",
+                    "chore": "\u2728 Clean and Dry Kitchen Counters",
+                    "value": 4.0,
+                    "status": "Pending",
+                    "timestamp": "07/27/26 at 12:58 AM"
                 }
             ]
         }
