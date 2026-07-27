@@ -87,7 +87,7 @@ def prune_old_history(data):
             if status == "Denied" and "timestamp" in item:
                 try:
                     entry_date = datetime.strptime(item["timestamp"], "%m/%d/%y at %I:%M %p")
-                    if (current_time - entry_date).days > 30:
+                    if (current_time - entry_date).days > 31:
                         keep_item = False
                         updated = True
                 except ValueError:
@@ -97,7 +97,7 @@ def prune_old_history(data):
             elif status == "Paid" and "paid_timestamp" in item:
                 try:
                     pay_date = datetime.strptime(item["paid_timestamp"], "%m/%d/%y at %I:%M %p")
-                    if (current_time - pay_date).days > 30:
+                    if (current_time - pay_date).days > 31:
                         keep_item = False
                         updated = True
                 except ValueError:
