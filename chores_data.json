@@ -1,7 +1,7 @@
 {
     "people": {
         "Lexi": {
-            "balance": 18.0,
+            "balance": 22.0,
             "history": [
                 {
                     "id": "1782407746",
@@ -313,7 +313,7 @@
                     "id": "1785276881",
                     "chore": "\ud83c\udf73 Cook a Family Meal",
                     "value": 4.0,
-                    "status": "Pending",
+                    "status": "Approved",
                     "timestamp": "07/28/26 at 06:14 PM"
                 },
                 {
