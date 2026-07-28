@@ -322,6 +322,13 @@
                     "value": 4.0,
                     "status": "Pending",
                     "timestamp": "07/28/26 at 06:24 PM"
+                },
+                {
+                    "id": "1785277526",
+                    "chore": "\ud83d\udebf Deep clean sink",
+                    "value": 4.0,
+                    "status": "Pending",
+                    "timestamp": "07/28/26 at 06:25 PM"
                 }
             ]
         }
