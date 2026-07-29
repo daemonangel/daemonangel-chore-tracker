@@ -343,13 +343,6 @@
                     "value": 4.0,
                     "status": "Approved",
                     "timestamp": "07/28/26 at 06:26 PM"
-                },
-                {
-                    "id": "1785287559",
-                    "chore": "\ud83d\udebf Deep clean sink",
-                    "value": 4.0,
-                    "status": "Denied",
-                    "timestamp": "07/28/26 at 09:12 PM"
                 }
             ]
         }
