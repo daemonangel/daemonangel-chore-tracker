@@ -1,7 +1,7 @@
 {
     "people": {
         "Lexi": {
-            "balance": 38.0,
+            "balance": 0.0,
             "history": [
                 {
                     "id": "1782407746",
@@ -271,78 +271,89 @@
                     "id": "1784473557",
                     "chore": "\ud83e\uddfa Partial Laundry Service (Wash, Dry, Fold OR Put Away)",
                     "value": 1.0,
-                    "status": "Approved",
-                    "timestamp": "07/19/26 at 03:05 PM"
+                    "status": "Paid",
+                    "timestamp": "07/19/26 at 03:05 PM",
+                    "paid_timestamp": "08/03/26 at 03:15 PM"
                 },
                 {
                     "id": "1785034578",
                     "chore": "\ud83c\udf7d\ufe0f Dry Dishes",
                     "value": 3.0,
-                    "status": "Approved",
-                    "timestamp": "07/25/26 at 09:56 PM"
+                    "status": "Paid",
+                    "timestamp": "07/25/26 at 09:56 PM",
+                    "paid_timestamp": "08/03/26 at 03:15 PM"
                 },
                 {
                     "id": "1785113708",
                     "chore": "\ud83c\udf7d\ufe0f Dry Dishes",
                     "value": 3.0,
-                    "status": "Approved",
-                    "timestamp": "07/26/26 at 8:55 PM"
+                    "status": "Paid",
+                    "timestamp": "07/26/26 at 8:55 PM",
+                    "paid_timestamp": "08/03/26 at 03:15 PM"
                 },
                 {
                     "id": "1785113894",
                     "chore": "\ud83c\udf72 Hand Clean Pot, Pan, or Container",
                     "value": 3.0,
-                    "status": "Approved",
-                    "timestamp": "07/26/26 at 8:58 PM"
+                    "status": "Paid",
+                    "timestamp": "07/26/26 at 8:58 PM",
+                    "paid_timestamp": "08/03/26 at 03:15 PM"
                 },
                 {
                     "id": "1785113902",
                     "chore": "\u2728 Clean and Dry Kitchen Counters",
                     "value": 4.0,
-                    "status": "Approved",
-                    "timestamp": "07/26/26 at 8:58 PM"
+                    "status": "Paid",
+                    "timestamp": "07/26/26 at 8:58 PM",
+                    "paid_timestamp": "08/03/26 at 03:15 PM"
                 },
                 {
                     "id": "1785113906",
                     "chore": "\u2728 Clean and Dry Kitchen Counters",
                     "value": 4.0,
-                    "status": "Approved",
-                    "timestamp": "07/26/26 at 8:58 PM"
+                    "status": "Paid",
+                    "timestamp": "07/26/26 at 8:58 PM",
+                    "paid_timestamp": "08/03/26 at 03:15 PM"
                 },
                 {
                     "id": "1785276881",
                     "chore": "\ud83c\udf73 Cook a Family Meal",
                     "value": 4.0,
-                    "status": "Approved",
-                    "timestamp": "07/28/26 at 06:14 PM"
+                    "status": "Paid",
+                    "timestamp": "07/28/26 at 06:14 PM",
+                    "paid_timestamp": "08/03/26 at 03:15 PM"
                 },
                 {
                     "id": "1785277493",
                     "chore": "\ud83d\udebf Deep clean sink",
                     "value": 4.0,
-                    "status": "Approved",
-                    "timestamp": "07/28/26 at 06:24 PM"
+                    "status": "Paid",
+                    "timestamp": "07/28/26 at 06:24 PM",
+                    "paid_timestamp": "08/03/26 at 03:15 PM"
                 },
                 {
                     "id": "1785277526",
                     "chore": "\ud83d\udebf Deep clean sink",
                     "value": 4.0,
-                    "status": "Approved",
-                    "timestamp": "07/28/26 at 06:25 PM"
+                    "status": "Paid",
+                    "timestamp": "07/28/26 at 06:25 PM",
+                    "paid_timestamp": "08/03/26 at 03:15 PM"
                 },
                 {
                     "id": "1785277569",
                     "chore": "\ud83d\udebf Deep clean sink",
                     "value": 4.0,
-                    "status": "Approved",
-                    "timestamp": "07/28/26 at 06:26 PM"
+                    "status": "Paid",
+                    "timestamp": "07/28/26 at 06:26 PM",
+                    "paid_timestamp": "08/03/26 at 03:15 PM"
                 },
                 {
                     "id": "1785277593",
                     "chore": "\ud83d\udebf Deep clean sink",
                     "value": 4.0,
-                    "status": "Approved",
-                    "timestamp": "07/28/26 at 06:26 PM"
+                    "status": "Paid",
+                    "timestamp": "07/28/26 at 06:26 PM",
+                    "paid_timestamp": "08/03/26 at 03:15 PM"
                 },
                 {
                     "id": "1785719381",
@@ -350,6 +361,13 @@
                     "value": 4.0,
                     "status": "Pending",
                     "timestamp": "08/02/26 at 09:09 PM"
+                },
+                {
+                    "id": "pay_1785784503",
+                    "chore": "\ud83d\udcb0 Paid Out Total Balance",
+                    "value": 38.0,
+                    "status": "Payout",
+                    "timestamp": "08/03/26 at 03:15 PM"
                 }
             ]
         }
