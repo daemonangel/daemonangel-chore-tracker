@@ -376,6 +376,13 @@
                     "value": 4.0,
                     "status": "Payout",
                     "timestamp": "08/03/26 at 03:15 PM"
+                },
+                {
+                    "id": "1785864585",
+                    "chore": "\ud83c\udf72 Hand Clean Pot, Pan, or Container",
+                    "value": 3.0,
+                    "status": "Pending",
+                    "timestamp": "08/04/26 at 01:29 PM"
                 }
             ]
         }
