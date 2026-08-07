@@ -1,7 +1,7 @@
 {
     "people": {
         "Lexi": {
-            "balance": 11.0,
+            "balance": 14.0,
             "history": [
                 {
                     "id": "1782407746",
@@ -402,7 +402,7 @@
                     "id": "1785893698",
                     "chore": "\ud83c\udf72 Hand Clean Pot, Pan, or Container",
                     "value": 3.0,
-                    "status": "Pending",
+                    "status": "Approved",
                     "timestamp": "08/04/26 at 09:34 PM"
                 }
             ]
