@@ -1,7 +1,7 @@
 {
     "people": {
         "Lexi": {
-            "balance": 14.0,
+            "balance": 17.0,
             "history": [
                 {
                     "id": "pay_manual_legacy_1",
@@ -353,7 +353,7 @@
                     "id": "1786244726",
                     "chore": "\ud83e\udeb6 Dusting & Wiping Shared Living Spaces",
                     "value": 3.0,
-                    "status": "Pending",
+                    "status": "Approved",
                     "timestamp": "08/08/26 at 11:05 PM"
                 }
             ]
