@@ -1,7 +1,7 @@
 {
     "people": {
         "Lexi": {
-            "balance": 17.0,
+            "balance": 21.0,
             "history": [
                 {
                     "id": "pay_manual_legacy_1",
@@ -367,7 +367,7 @@
                     "id": "1786245847",
                     "chore": "\ud83d\udebf Deep clean sink",
                     "value": 4.0,
-                    "status": "Pending",
+                    "status": "Approved",
                     "timestamp": "08/08/26 at 11:24 PM"
                 }
             ]
