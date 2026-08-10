@@ -369,6 +369,13 @@
                     "value": 4.0,
                     "status": "Approved",
                     "timestamp": "08/08/26 at 11:24 PM"
+                },
+                {
+                    "id": "1786324454",
+                    "chore": "\ud83c\udf73 Cook a Family Meal",
+                    "value": 4.0,
+                    "status": "Pending",
+                    "timestamp": "08/09/26 at 09:14 PM"
                 }
             ]
         }
