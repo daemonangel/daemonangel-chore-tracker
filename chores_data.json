@@ -362,6 +362,13 @@
                     "value": 4.0,
                     "status": "Pending",
                     "timestamp": "08/09/26 at 09:14 PM"
+                },
+                {
+                    "id": "1786581870",
+                    "chore": "\ud83c\udf73 Cook a Family Meal",
+                    "value": 4.0,
+                    "status": "Pending",
+                    "timestamp": "08/12/26 at 08:44 PM"
                 }
             ]
         }
