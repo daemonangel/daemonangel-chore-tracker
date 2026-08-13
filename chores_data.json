@@ -11,20 +11,6 @@
                     "timestamp": "07/7/26 at 05:30 PM"
                 },
                 {
-                    "id": "1783612417",
-                    "chore": "\ud83e\uddfa Partial Laundry Service (Wash, Dry, Fold OR Put Away)",
-                    "value": 1.0,
-                    "status": "Denied",
-                    "timestamp": "07/11/26 at 12:00 PM"
-                },
-                {
-                    "id": "1783612442",
-                    "chore": "Folded laundry ",
-                    "value": 2.5,
-                    "status": "Denied",
-                    "timestamp": "07/11/26 at 12:00 PM"
-                },
-                {
                     "id": "1783612466",
                     "chore": "\ud83e\uddfa Full Laundry Service (Wash, Dry, Fold & Put Away)",
                     "value": 4.0,
