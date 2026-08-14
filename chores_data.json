@@ -390,6 +390,13 @@
                     "value": 5.0,
                     "status": "Pending",
                     "timestamp": "08/14/26 at 01:23 AM"
+                },
+                {
+                    "id": "1786685052",
+                    "chore": "\ud83c\udf7d\ufe0f Dishwasher (Load or Empty)",
+                    "value": 2.0,
+                    "status": "Pending",
+                    "timestamp": "08/14/26 at 01:24 AM"
                 }
             ]
         }
