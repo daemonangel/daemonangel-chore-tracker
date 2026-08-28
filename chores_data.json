@@ -1,7 +1,7 @@
 {
     "people": {
         "Lexi": {
-            "balance": 31.0,
+            "balance": 51.0,
             "history": [
                 {
                     "id": "pay_manual_legacy_1",
@@ -194,7 +194,7 @@
                     "id": "1786685013",
                     "chore": "Clean kitchen ",
                     "value": 20.0,
-                    "status": "Pending",
+                    "status": "Approved",
                     "timestamp": "08/14/26 at 01:23 AM"
                 },
                 {
