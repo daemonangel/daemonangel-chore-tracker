@@ -1,7 +1,7 @@
 {
     "people": {
         "Lexi": {
-            "balance": 19.0,
+            "balance": 17.0,
             "history": [
                 {
                     "id": "pay_manual_legacy_1",
@@ -65,13 +65,6 @@
                     "value": 3.0,
                     "status": "Approved",
                     "timestamp": "08/08/26 at 11:05 PM"
-                },
-                {
-                    "id": "1786245835",
-                    "chore": "\ud83e\uddfc High-Touch Sanitize (Knobs, remotes, switches)",
-                    "value": 2.0,
-                    "status": "Approved",
-                    "timestamp": "08/08/26 at 11:23 PM"
                 }
             ]
         }
