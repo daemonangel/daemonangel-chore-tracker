@@ -65,7 +65,7 @@ def save_data_to_github(data, sha=None):
 
     response = requests.put(URL, headers=HEADERS, json=payload)
     
-    # 💡 FIX: If the save is successful, update our local SHA key with GitHub's new one
+    # 💡 FIX: If the save is successful, update our local SHA key with GitHub's new one.
     if response.status_code in [200, 201]:
         res_json = response.json()
         if "content" in res_json and "sha" in res_json["content"]:
