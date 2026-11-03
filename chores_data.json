@@ -58,6 +58,13 @@
                     "value": 5.0,
                     "status": "Pending",
                     "timestamp": "11/02/26 at 08:43 PM"
+                },
+                {
+                    "id": "1793670211",
+                    "chore": "\ud83e\uddfa Full Laundry Service (Wash, Dry, Fold & Put Away)",
+                    "value": 5.0,
+                    "status": "Pending",
+                    "timestamp": "11/02/26 at 08:43 PM"
                 }
             ]
         }
