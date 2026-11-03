@@ -10,6 +10,8 @@ import streamlit as st
 st.set_page_config(page_title="Chore Tracker", page_icon="🧹", layout="centered")
 
 PRESET_CHORES = {
+    "✅ Good grade above 90": 5.00,
+    "❌ Bad grade below 70": -3.00,
     "🛋️ Common Space Reset (Clutter put away)": 1.00,
     "🛌 Personal Room Tidy (Bed made, floor clear)": 1.00,
     "🧺 Partial Laundry Service (Wash, Dry, Fold OR Put Away)": 1.00,
