@@ -51,6 +51,13 @@
                     "value": 3.0,
                     "status": "Approved",
                     "timestamp": "08/08/26 at 11:05 PM"
+                },
+                {
+                    "id": "1793670187",
+                    "chore": "\u2705 Good grade above 90",
+                    "value": 5.0,
+                    "status": "Pending",
+                    "timestamp": "11/02/26 at 08:43 PM"
                 }
             ]
         }
