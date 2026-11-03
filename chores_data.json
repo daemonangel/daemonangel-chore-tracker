@@ -1,7 +1,7 @@
 {
     "people": {
         "Lexi": {
-            "balance": 13.0,
+            "balance": 10.0,
             "history": [
                 {
                     "id": "pay_manual_legacy_1",
@@ -30,13 +30,6 @@
                     "value": 4.0,
                     "status": "Payout",
                     "timestamp": "08/03/26 at 03:15 PM"
-                },
-                {
-                    "id": "1785864585",
-                    "chore": "\ud83c\udf72 Hand Clean Pot, Pan, or Container",
-                    "value": 3.0,
-                    "status": "Approved",
-                    "timestamp": "08/04/26 at 01:29 PM"
                 },
                 {
                     "id": "1785893077",
